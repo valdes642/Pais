@@ -4,6 +4,8 @@
  */
 package com.mycompany.pais;
 
+import javax.swing.JLabel;
+
 /**
  *
  * @author Victor Vergara
@@ -32,8 +34,8 @@ public class login extends javax.swing.JFrame {
     private void initComponents() {
 
         txtpassword = new javax.swing.JPasswordField();
-        JLabe2 = new javax.swing.JTextField();
-        JLabe1 = new javax.swing.JTextField();
+        jLabe2 = new javax.swing.JTextField();
+        jLabe1 = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtusuario = new javax.swing.JTextPane();
         btnlogin = new javax.swing.JButton();
@@ -48,17 +50,17 @@ public class login extends javax.swing.JFrame {
             }
         });
 
-        JLabe2.setText("Contraseña");
-        JLabe2.addActionListener(new java.awt.event.ActionListener() {
+        jLabe2.setText("Contraseña");
+        jLabe2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JLabe2ActionPerformed(evt);
+                jLabe2ActionPerformed(evt);
             }
         });
 
-        JLabe1.setText("Usuario");
-        JLabe1.addActionListener(new java.awt.event.ActionListener() {
+        jLabe1.setText("Usuario");
+        jLabe1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JLabe1ActionPerformed(evt);
+                jLabe1ActionPerformed(evt);
             }
         });
 
@@ -82,8 +84,8 @@ public class login extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(JLabe2)
-                            .addComponent(JLabe1))
+                            .addComponent(jLabe2)
+                            .addComponent(jLabe1))
                         .addGap(72, 72, 72)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1)
@@ -104,12 +106,12 @@ public class login extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(49, 49, 49)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(JLabe1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabe1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JLabe2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabe2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
                 .addComponent(btnlogin)
                 .addGap(49, 49, 49))
@@ -118,17 +120,87 @@ public class login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void JLabe2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JLabe2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JLabe2ActionPerformed
+    private void jLabe2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLabe2ActionPerformed
+     
+
+        JLabel jLabel;
+        jLabel = new javax.swing.JLabel();
+        jLabe2 = new javax.swing.JLabe();
+        btnlogin = new javax.swing.JButton();
+        txtusuario = new javax.swing.JTextField();
+        txtpassword = new javax.swing.JPasswordField();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setText("Usuario");
+
+        jLabe2.setText("Contraseña");
+
+        btnlogin.setText("Acceder");
+        btnlogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnloginActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(77, 77, 77)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabe2))
+                        .addGap(51, 51, 51)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtusuario, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                            .addComponent(txtpassword)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(151, 151, 151)
+                        .addComponent(btnlogin)))
+                .addContainerGap(92, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtusuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabe2)
+                    .addComponent(txtpassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
+                .addComponent(btnlogin)
+                .addGap(62, 62, 62))
+        );
+
+        pack();
+    }//GEN-LAST:event_jLabe2ActionPerformed
 
     private void btnloginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnloginActionPerformed
-        // TODO add your handling code here:
+        
+        String usuario = txtusuario.getText();
+        String password = txtpassword.getText();
+        
+        String usuario1 = "admin";
+        String password1 = "admin";
+        if(usuario.equals(usuario1) && password.equals(password1)){
+            Paises vista  = new Paises();
+            vista.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Revisa tus credenciales!", "Error de contraseña", JOptionPane.ERROR_MESSAGE);
+        }// TODO add your handling code here:
     }//GEN-LAST:event_btnloginActionPerformed
 
-    private void JLabe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JLabe1ActionPerformed
+    private void jLabe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLabe1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_JLabe1ActionPerformed
+    }//GEN-LAST:event_jLabe1ActionPerformed
 
     private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
         // TODO add your handling code here:
@@ -138,7 +210,7 @@ public class login extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
+      
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
@@ -154,15 +226,14 @@ public class login extends javax.swing.JFrame {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField JLabe1;
-    private javax.swing.JTextField JLabe2;
     private javax.swing.JButton btnlogin;
+    private javax.swing.JTextField jLabe1;
+    private javax.swing.JTextField jLabe2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPasswordField txtpassword;
