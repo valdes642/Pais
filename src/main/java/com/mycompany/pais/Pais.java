@@ -24,6 +24,9 @@ public class Pais {
     private String Codigo_del_Pais;
     private String Idioma_del_Pais;
 
+    public Pais() {
+    }
+
     public Pais(String Nombre, String Continente, String Ciudades, String Region, int Superficie, int Año_de_Independencia, int Poblacion, int Expectativa_de_Vida, int Pib, String Forma_de_Gobierno, String Jefe_de_estado, String Ciudad, String Codigo_del_Pais, String Idioma_del_Pais) {
         this.Nombre = Nombre;
         this.Continente = Continente;
