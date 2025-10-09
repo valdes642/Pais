@@ -14,34 +14,34 @@ public class Pais {
     private String Ciudades;
     private String Region;
     private int Superficie;
-    private int Año_de_Independencia;
+    private int AnioDeIndependencia;
     private int Poblacion;
-    private int Expectativa_de_Vida;
+    private int ExpectativaDeVida;
     private int Pib;
-    private String Forma_de_Gobierno;
-    private String Jefe_de_estado;
+    private String FormaDeGobierno;
+    private String JefeDeestado;
     private String Ciudad;
-    private String Codigo_del_Pais;
-    private String Idioma_del_Pais;
+    private String CodigoDelPais;
+    private String IdiomaDelPais;
 
     public Pais() {
     }
 
-    public Pais(String Nombre, String Continente, String Ciudades, String Region, int Superficie, int Año_de_Independencia, int Poblacion, int Expectativa_de_Vida, int Pib, String Forma_de_Gobierno, String Jefe_de_estado, String Ciudad, String Codigo_del_Pais, String Idioma_del_Pais) {
+    public Pais(String Nombre, String Continente, String Ciudades, String Region, int Superficie, int AnioDeIndependencia, int Poblacion, int ExpectativaDeVida, int Pib, String FormaDeGobierno, String JefeDeestado, String Ciudad, String CodigoDelPais, String IdiomaDelPais) {
         this.Nombre = Nombre;
         this.Continente = Continente;
         this.Ciudades = Ciudades;
         this.Region = Region;
         this.Superficie = Superficie;
-        this.Año_de_Independencia = Año_de_Independencia;
+        this.AnioDeIndependencia = AnioDeIndependencia;
         this.Poblacion = Poblacion;
-        this.Expectativa_de_Vida = Expectativa_de_Vida;
+        this.ExpectativaDeVida = ExpectativaDeVida;
         this.Pib = Pib;
-        this.Forma_de_Gobierno = Forma_de_Gobierno;
-        this.Jefe_de_estado = Jefe_de_estado;
+        this.FormaDeGobierno = FormaDeGobierno;
+        this.JefeDeestado = JefeDeestado;
         this.Ciudad = Ciudad;
-        this.Codigo_del_Pais = Codigo_del_Pais;
-        this.Idioma_del_Pais = Idioma_del_Pais;
+        this.CodigoDelPais = CodigoDelPais;
+        this.IdiomaDelPais = IdiomaDelPais;
     }
 
     public String getNombre() {
@@ -84,12 +84,12 @@ public class Pais {
         this.Superficie = Superficie;
     }
 
-    public int getAño_de_Independencia() {
-        return Año_de_Independencia;
+    public int getAnioDeIndependencia() {
+        return AnioDeIndependencia;
     }
 
-    public void setAño_de_Independencia(int Año_de_Independencia) {
-        this.Año_de_Independencia = Año_de_Independencia;
+    public void setAnioDeIndependencia(int AnioDeIndependencia) {
+        this.AnioDeIndependencia = AnioDeIndependencia;
     }
 
     public int getPoblacion() {
@@ -100,12 +100,12 @@ public class Pais {
         this.Poblacion = Poblacion;
     }
 
-    public int getExpectativa_de_Vida() {
-        return Expectativa_de_Vida;
+    public int getExpectativaDeVida() {
+        return ExpectativaDeVida;
     }
 
-    public void setExpectativa_de_Vida(int Expectativa_de_Vida) {
-        this.Expectativa_de_Vida = Expectativa_de_Vida;
+    public void setExpectativaDeVida(int ExpectativaDeVida) {
+        this.ExpectativaDeVida = ExpectativaDeVida;
     }
 
     public int getPib() {
@@ -116,20 +116,20 @@ public class Pais {
         this.Pib = Pib;
     }
 
-    public String getForma_de_Gobierno() {
-        return Forma_de_Gobierno;
+    public String getFormaDeGobierno() {
+        return FormaDeGobierno;
     }
 
-    public void setForma_de_Gobierno(String Forma_de_Gobierno) {
-        this.Forma_de_Gobierno = Forma_de_Gobierno;
+    public void setFormaDeGobierno(String FormaDeGobierno) {
+        this.FormaDeGobierno = FormaDeGobierno;
     }
 
-    public String getJefe_de_estado() {
-        return Jefe_de_estado;
+    public String getJefeDeestado() {
+        return JefeDeestado;
     }
 
-    public void setJefe_de_estado(String Jefe_de_estado) {
-        this.Jefe_de_estado = Jefe_de_estado;
+    public void setJefeDeestado(String JefeDeestado) {
+        this.JefeDeestado = JefeDeestado;
     }
 
     public String getCiudad() {
@@ -140,26 +140,27 @@ public class Pais {
         this.Ciudad = Ciudad;
     }
 
-    public String getCodigo_del_Pais() {
-        return Codigo_del_Pais;
+    public String getCodigoDelPais() {
+        return CodigoDelPais;
     }
 
-    public void setCodigo_del_Pais(String Codigo_del_Pais) {
-        this.Codigo_del_Pais = Codigo_del_Pais;
+    public void setCodigoDelPais(String CodigoDelPais) {
+        this.CodigoDelPais = CodigoDelPais;
     }
 
-    public String getIdioma_del_Pais() {
-        return Idioma_del_Pais;
+    public String getIdiomaDelPais() {
+        return IdiomaDelPais;
     }
 
-    public void setIdioma_del_Pais(String Idioma_del_Pais) {
-        this.Idioma_del_Pais = Idioma_del_Pais;
+    public void setIdiomaDelPais(String IdiomaDelPais) {
+        this.IdiomaDelPais = IdiomaDelPais;
     }
 
     @Override
     public String toString() {
-        return "Pais{" + "Nombre=" + Nombre + ", Continente=" + Continente + ", Ciudades=" + Ciudades + ", Region=" + Region + ", Superficie=" + Superficie + ", A\u00f1o_de_Independencia=" + Año_de_Independencia + ", Poblacion=" + Poblacion + ", Expectativa_de_Vida=" + Expectativa_de_Vida + ", Pib=" + Pib + ", Forma_de_Gobierno=" + Forma_de_Gobierno + ", Jefe_de_estado=" + Jefe_de_estado + ", Ciudad=" + Ciudad + ", Codigo_del_Pais=" + Codigo_del_Pais + ", Idioma_del_Pais=" + Idioma_del_Pais + '}';
+        return "Pais{" + "Nombre=" + Nombre + ", Continente=" + Continente + ", Ciudades=" + Ciudades + ", Region=" + Region + ", Superficie=" + Superficie + ", AnioDeIndependencia=" + AnioDeIndependencia + ", Poblacion=" + Poblacion + ", ExpectativaDeVida=" + ExpectativaDeVida + ", Pib=" + Pib + ", FormaDeGobierno=" + FormaDeGobierno + ", JefeDeestado=" + JefeDeestado + ", Ciudad=" + Ciudad + ", CodigoDelPais=" + CodigoDelPais + ", IdiomaDelPais=" + IdiomaDelPais + '}';
     }
 
+   
    
 }

@@ -10,16 +10,16 @@ package com.mycompany.pais;
  */
 public class IdiomaPais {
     private String Idioma;
-    private boolean Idioma_Oficial;
-    private int Porcentaje_del_idioma_hablado;
+    private boolean IdiomaOficial;
+    private int PorcentajDeLidiomaHablado;
 
     public IdiomaPais() {
     }
 
-    public IdiomaPais(String Idioma, boolean Idioma_Oficial, int Porcentaje_del_idioma_hablado) {
+    public IdiomaPais(String Idioma, boolean IdiomaOficial, int PorcentajDeLidiomaHablado) {
         this.Idioma = Idioma;
-        this.Idioma_Oficial = Idioma_Oficial;
-        this.Porcentaje_del_idioma_hablado = Porcentaje_del_idioma_hablado;
+        this.IdiomaOficial = IdiomaOficial;
+        this.PorcentajDeLidiomaHablado = PorcentajDeLidiomaHablado;
     }
 
     public String getIdioma() {
@@ -30,25 +30,27 @@ public class IdiomaPais {
         this.Idioma = Idioma;
     }
 
-    public boolean isIdioma_Oficial() {
-        return Idioma_Oficial;
+    public boolean isIdiomaOficial() {
+        return IdiomaOficial;
     }
 
-    public void setIdioma_Oficial(boolean Idioma_Oficial) {
-        this.Idioma_Oficial = Idioma_Oficial;
+    public void setIdiomaOficial(boolean IdiomaOficial) {
+        this.IdiomaOficial = IdiomaOficial;
     }
 
-    public int getPorcentaje_del_idioma_hablado() {
-        return Porcentaje_del_idioma_hablado;
+    public int getPorcentajDeLidiomaHablado() {
+        return PorcentajDeLidiomaHablado;
     }
 
-    public void setPorcentaje_del_idioma_hablado(int Porcentaje_del_idioma_hablado) {
-        this.Porcentaje_del_idioma_hablado = Porcentaje_del_idioma_hablado;
+    public void setPorcentajDeLidiomaHablado(int PorcentajDeLidiomaHablado) {
+        this.PorcentajDeLidiomaHablado = PorcentajDeLidiomaHablado;
     }
 
     @Override
     public String toString() {
-        return "IdiomaPais{" + "Idioma=" + Idioma + ", Idioma_Oficial=" + Idioma_Oficial + ", Porcentaje_del_idioma_hablado=" + Porcentaje_del_idioma_hablado + '}';
+        return "IdiomaPais{" + "Idioma=" + Idioma + ", IdiomaOficial=" + IdiomaOficial + ", PorcentajDeLidiomaHablado=" + PorcentajDeLidiomaHablado + '}';
     }
+
+ 
     
 }
