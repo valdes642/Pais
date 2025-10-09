@@ -45,5 +45,10 @@ public class IdiomaPais {
     public void setPorcentaje_del_idioma_hablado(int Porcentaje_del_idioma_hablado) {
         this.Porcentaje_del_idioma_hablado = Porcentaje_del_idioma_hablado;
     }
+
+    @Override
+    public String toString() {
+        return "IdiomaPais{" + "Idioma=" + Idioma + ", Idioma_Oficial=" + Idioma_Oficial + ", Porcentaje_del_idioma_hablado=" + Porcentaje_del_idioma_hablado + '}';
+    }
     
 }

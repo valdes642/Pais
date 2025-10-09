@@ -156,5 +156,10 @@ public class Pais {
         this.Idioma_del_Pais = Idioma_del_Pais;
     }
 
+    @Override
+    public String toString() {
+        return "Pais{" + "Nombre=" + Nombre + ", Continente=" + Continente + ", Ciudades=" + Ciudades + ", Region=" + Region + ", Superficie=" + Superficie + ", A\u00f1o_de_Independencia=" + Año_de_Independencia + ", Poblacion=" + Poblacion + ", Expectativa_de_Vida=" + Expectativa_de_Vida + ", Pib=" + Pib + ", Forma_de_Gobierno=" + Forma_de_Gobierno + ", Jefe_de_estado=" + Jefe_de_estado + ", Ciudad=" + Ciudad + ", Codigo_del_Pais=" + Codigo_del_Pais + ", Idioma_del_Pais=" + Idioma_del_Pais + '}';
+    }
+
    
 }
