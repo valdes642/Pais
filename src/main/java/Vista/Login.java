@@ -4,9 +4,6 @@
  */
 package Vista;
 
-import Vista.Registro_Poblacional_Internacional;
-import Vista.Registro_Poblacional_Internacional;
-
 /**
  *
  * @author Santo Tomas
@@ -35,6 +32,7 @@ public class Login extends javax.swing.JFrame {
         texContraseña = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        btnLogin = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,16 +61,29 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("Contraseña");
 
+        btnLogin.setText("Login");
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLoginActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnLogin)
+                        .addGap(31, 31, 31)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(texContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,7 +112,9 @@ public class Login extends javax.swing.JFrame {
                     .addComponent(texContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                .addComponent(btnIngresar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIngresar)
+                    .addComponent(btnLogin))
                 .addGap(23, 23, 23))
         );
 
@@ -110,31 +123,28 @@ public class Login extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         // TODO add your handling code here:
+        
+        
+        
+        
+        
          // Crear e iniciar la nueva ventana
         Registro_Poblacional_Internacional registro = new Registro_Poblacional_Internacional();
-        registro.setVisible(true);
-
-        // Opcional: cerrar la ventana actual
-        
+        registro.setVisible(true);        
     }//GEN-LAST:event_btnIngresarActionPerformed
 
+    
     private void texContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texContraseñaActionPerformed
-        // TODO add your handling code here:
-    // Obtener el texto ingresado en el campo de contraseña
-    String contraseña = texContraseña.getText();
-    // Aquí puedes agregar la lógica, por ejemplo, validar la contraseña
-    System.out.println("Contraseña ingresada: " + contraseña);
 
     }//GEN-LAST:event_texContraseñaActionPerformed
 
     private void texUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_texUsuarioActionPerformed
-        // TODO add your handling code here:
-                                                 
-    // Obtener el texto ingresado en el campo de usuario
-    String usuario = texUsuario.getText();
-    // Aquí puedes agregar la lógica, por ejemplo, validar el usuario
-    System.out.println("Usuario ingresado: " + usuario);
+
     }//GEN-LAST:event_texUsuarioActionPerformed
+
+    private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+
+    }//GEN-LAST:event_btnLoginActionPerformed
 
     /**
      * @param args the command line arguments
@@ -163,16 +173,12 @@ public class Login extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Login().setVisible(true);
-            }
-        });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JButton btnLogin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
