@@ -10,6 +10,7 @@ package com.mycompany.pais;
  */
 public class Pais {
     private String Nombre;
+    
     private String Continente;
     private String Ciudades;
     private String Region;
