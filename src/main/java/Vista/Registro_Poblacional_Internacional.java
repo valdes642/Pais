@@ -83,9 +83,9 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
+        jButton1.setText("volver");
 
-        jButton2.setText("jButton2");
+        jButton2.setText("eliminar");
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,12 +148,11 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnVolver)))
-                .addContainerGap(182, Short.MAX_VALUE))
+                .addContainerGap(188, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

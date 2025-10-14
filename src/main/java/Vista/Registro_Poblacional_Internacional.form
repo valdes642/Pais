@@ -62,7 +62,6 @@
                               <Component id="jLabel1" min="-2" pref="399" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jScrollPane2" min="-2" pref="276" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -70,7 +69,7 @@
                       <Component id="btnVolver" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="182" max="32767" attributes="0"/>
+              <EmptySpace pref="188" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -180,12 +179,12 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton1"/>
+        <Property name="text" type="java.lang.String" value="volver"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jButton2"/>
+        <Property name="text" type="java.lang.String" value="eliminar"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnAgregar">
