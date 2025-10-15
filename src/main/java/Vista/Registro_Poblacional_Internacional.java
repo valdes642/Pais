@@ -193,22 +193,27 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+try {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
 
-    javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
+        String codigo = jTextField3.getText();
+        String nombre = jTextField1.getText();
+        String continente = jTextField2.getText();
+        int poblacion = Integer.parseInt(jTextField4.getText());
 
-    String codigo = jTextField3.getText();
-    String nombre = jTextField1.getText();
-    String continente = jTextField2.getText();
-    String poblacion = jTextField4.getText();
-    Object[] newRow = {codigo, nombre, continente, poblacion};
-    model.addRow(newRow);
+        Object[] newRow = {codigo, nombre, continente, poblacion};
 
-    jTextField1.setText("");
-    jTextField2.setText("");
-    jTextField3.setText("");
-    jTextField4.setText("");
+        model.addRow(newRow);
 
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
 
+    } catch (NumberFormatException e) {
+
+        javax.swing.JOptionPane.showMessageDialog(this, "Error: La población debe estar en números", "dato invalido", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     /**
