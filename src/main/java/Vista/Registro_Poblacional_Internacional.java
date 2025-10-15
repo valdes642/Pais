@@ -36,7 +36,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableRegistro = new javax.swing.JTable();
@@ -84,7 +84,12 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
 
         jButton1.setText("volver");
 
-        jButton2.setText("eliminar");
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -111,8 +116,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 399, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +136,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                                 .addComponent(jTextField1)
                                 .addComponent(jTextField3))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton2)
+                                .addComponent(btnEliminar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
                                 .addComponent(jButton1)))))
                 .addGap(26, 26, 26)
@@ -164,7 +168,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton2)
+                            .addComponent(btnEliminar)
                             .addComponent(btnAgregar)
                             .addComponent(jButton1)))
                     .addGroup(layout.createSequentialGroup()
@@ -216,6 +220,21 @@ try {
     }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+            int selectedRow = tableRegistro.getSelectedRow();
+
+    if (selectedRow != -1) {
+        javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
+        model.removeRow(selectedRow);
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Selecciona una fila para eliminar.", "Falta una fila seleccionada",
+            javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+    }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -254,8 +273,8 @@ try {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
