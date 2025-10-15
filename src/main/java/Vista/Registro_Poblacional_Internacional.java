@@ -14,9 +14,9 @@ private javax.swing.table.TableRowSorter sorter;
    
     public Registro_Poblacional_Internacional() {
         initComponents();
-          javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
-  sorter = new javax.swing.table.TableRowSorter<>(model);
-  tableRegistro.setRowSorter(sorter);
+     javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
+        sorter = new javax.swing.table.TableRowSorter<>(model);
+        tableRegistro.setRowSorter(sorter);   
     }
        
 
@@ -268,7 +268,12 @@ try {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+       String textoBusqueda = txtBuscar.getText();
+    if (textoBusqueda.trim().length() == 0) {
+        sorter.setRowFilter(null);
+    } else {
+        sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + textoBusqueda));
+    }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
