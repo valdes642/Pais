@@ -45,6 +45,7 @@ private javax.swing.table.TableRowSorter sorter;
         tableRegistro = new javax.swing.JTable();
         txtBuscar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -116,6 +117,11 @@ private javax.swing.table.TableRowSorter sorter;
                 "Código", "Nombre", "Continente", "Población"
             }
         ));
+        tableRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableRegistroMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tableRegistro);
 
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -125,6 +131,13 @@ private javax.swing.table.TableRowSorter sorter;
         });
 
         jLabel6.setText("Buscar entre la informacion ingresada");
+
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -141,7 +154,7 @@ private javax.swing.table.TableRowSorter sorter;
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
                         .addComponent(btnAgregar)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -151,8 +164,10 @@ private javax.swing.table.TableRowSorter sorter;
                             .addComponent(jTextField3)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
-                        .addComponent(btnEliminar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEliminar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                        .addComponent(btnModificar)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
@@ -193,7 +208,8 @@ private javax.swing.table.TableRowSorter sorter;
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEliminar)
-                            .addComponent(btnAgregar)))
+                            .addComponent(btnAgregar)
+                            .addComponent(btnModificar)))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -276,6 +292,51 @@ try {
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int selectedRow = tableRegistro.getSelectedRow();
+    if (selectedRow != -1) {
+        try {
+            String codigo = jTextField3.getText();
+            String nombre = jTextField1.getText();
+            String continente = jTextField2.getText();
+            int poblacion = Integer.parseInt(jTextField4.getText());
+            
+            javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
+            
+            model.setValueAt(codigo, selectedRow, 0);
+            model.setValueAt(nombre, selectedRow, 1);
+            model.setValueAt(continente, selectedRow, 2);
+            model.setValueAt(poblacion, selectedRow, 3);
+            
+            jTextField1.setText("");
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            
+        } catch (NumberFormatException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: La población debe ser un número válido.", "Dato Incorrecto", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una fila", "Falta una ", javax.swing.JOptionPane.WARNING_MESSAGE);
+    }
+    }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tableRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRegistroMouseClicked
+     int SelectedRow = tableRegistro.getSelectedRow();
+     if(SelectedRow != -1){
+         javax.swing.table.DefaultTableModel model = (javax.swing.table.DefaultTableModel) tableRegistro.getModel();
+         String codigo = model.getValueAt(SelectedRow,0).toString();
+         String nombre = model.getValueAt(SelectedRow,1).toString();
+         String continente = model.getValueAt(SelectedRow,2).toString();
+         String poblacion = model.getValueAt(SelectedRow,3).toString();
+         
+        jTextField3.setText(codigo);
+        jTextField1.setText(nombre);
+        jTextField2.setText(continente);
+        jTextField4.setText(poblacion);
+     }
+    }//GEN-LAST:event_tableRegistroMouseClicked
     
     /**
      * @param args the command line arguments
@@ -317,6 +378,7 @@ try {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
