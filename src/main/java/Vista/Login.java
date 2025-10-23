@@ -149,6 +149,7 @@ public class Login extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         Registro_Poblacional_Internacional vista = new Registro_Poblacional_Internacional();
         vista.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnNosotrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNosotrosActionPerformed
