@@ -153,7 +153,9 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnNosotrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNosotrosActionPerformed
-    
+    Nosotros vista = new Nosotros();
+    vista.setVisible(true);
+    dispose();
     }//GEN-LAST:event_btnNosotrosActionPerformed
 
     /**

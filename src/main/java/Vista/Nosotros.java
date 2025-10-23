@@ -88,7 +88,10 @@ public class Nosotros extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
-        // TODO add your handling code here:
+    Login vista = new Login();
+    vista.setVisible(true);
+    dispose();
+// TODO add your handling code here:
     }//GEN-LAST:event_btnVolverActionPerformed
 
     /**
