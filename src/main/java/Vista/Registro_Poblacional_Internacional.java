@@ -331,7 +331,7 @@ try {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: La población debe ser un número válido.", "Dato Incorrecto", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una fila", "Falta una ", javax.swing.JOptionPane.WARNING_MESSAGE);
+        javax.swing.JOptionPane.showMessageDialog(this, "Selecciona una fila", "Falta una", javax.swing.JOptionPane.WARNING_MESSAGE);
     }
     }//GEN-LAST:event_btnModificarActionPerformed
 
