@@ -147,9 +147,34 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtContraseñaActionPerformed
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
+    String usuarioCorrecto = "admin";
+    String claveCorrecta = "12345";
+
+    // 2. Obtén el texto que el usuario escribió
+    String usuarioIngresado = txtUsuario.getText();
+    String claveIngresada = txtContraseña.getText(); // <-- Mira la nota de JPasswordField abajo
+
+    // 3. Compara si AMBOS son correctos
+    // (Importante: ¡Usa .equals() para comparar Strings, NUNCA "==" !)
+    if (usuarioIngresado.equals(usuarioCorrecto) && claveIngresada.equals(claveCorrecta)) {
+        
+        // --- Si son correctos, ábrele la puerta ---
         Registro_Poblacional_Internacional vista = new Registro_Poblacional_Internacional();
         vista.setVisible(true);
-        dispose();
+        dispose(); // Cierra esta ventana de login
+
+    } else {
+        
+        // --- Si son incorrectos, muéstrale un error ---
+        javax.swing.JOptionPane.showMessageDialog(this, 
+                                                  "Usuario o Contraseña incorrectos.", 
+                                                  "Error de Acceso", 
+                                                  javax.swing.JOptionPane.ERROR_MESSAGE);
+        
+        // Opcional: Limpia la contraseña para que intente de nuevo
+        txtContraseña.setText("");
+        txtContraseña.requestFocus(); // Pone el cursor en el campo de contraseña
+    }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnNosotrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNosotrosActionPerformed
