@@ -12,8 +12,8 @@ public class ConexionDB {
 
     // Configuración para MySQL según tu script
     private static final String URL = "jdbc:mysql://localhost:3306/mundo";
-    private static final String USER = "root"; // Tu usuario de MySQL (usualmente root)
-    private static final String PASSWORD = ""; // Tu contraseña de MySQL (usualmente vacía en XAMPP)
+    private static final String USER = "root"; 
+    private static final String PASSWORD = "060402"; 
 
     public static Connection connect() {
         Connection conn = null;
