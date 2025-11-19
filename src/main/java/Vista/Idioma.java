@@ -43,6 +43,9 @@ public class Idioma extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
+        btnAgregar = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(852, 317));
@@ -83,6 +86,36 @@ public class Idioma extends javax.swing.JFrame {
         jLabel7.setText("Tablas");
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        btnAgregar.setBackground(new java.awt.Color(102, 255, 102));
+        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAgregar.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+
+        btnEliminar.setBackground(new java.awt.Color(255, 0, 51));
+        btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnEliminar.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+
+        btnModificar.setBackground(new java.awt.Color(102, 255, 255));
+        btnModificar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnModificar.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificar.setText("Modificar");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -127,6 +160,14 @@ public class Idioma extends javax.swing.JFrame {
                                 .addGap(110, 110, 110)))))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(btnAgregar)
+                .addGap(50, 50, 50)
+                .addComponent(btnEliminar)
+                .addGap(44, 44, 44)
+                .addComponent(btnModificar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +203,13 @@ public class Idioma extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAgregar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnEliminar)
+                        .addComponent(btnModificar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,6 +218,117 @@ public class Idioma extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {
+            String sql = "INSERT INTO Pais(codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno) VALUES(?,?,?,?,?)";
+
+            try (Connection conn = ConexionDB.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                String codigo = jTextField3.getText();
+                String nombre = jTextField1.getText(); // Usamos jTextField1 para Nombre
+                String continente = jTextField2.getText();
+                int poblacion;
+
+                // Validación de número
+                try {
+                    poblacion = Integer.parseInt(jTextField4.getText());
+                } catch (NumberFormatException e) {
+                    throw new Exception("La población debe ser un número entero.");
+                }
+
+                // REGLA DE NEGOCIO: Población no negativa
+                if (poblacion < 0) {
+                    throw new Exception("La población no puede ser negativa.");
+                }
+
+                pstmt.setString(1, codigo);
+                pstmt.setString(2, nombre);
+                pstmt.setString(3, continente);
+                pstmt.setInt(4, poblacion);
+                pstmt.setInt(5, 1); // Tipo gobierno por defecto
+
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "País guardado exitosamente.");
+
+                limpiarCampos();
+                cargarDatos();
+                llenarComboPaises();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        int selectedRow = tableRegistro.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
+            return;
+        }
+
+        String codigo = tableRegistro.getValueAt(selectedRow, 0).toString();
+        int confirm = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar: " + codigo + "?");
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM Pais WHERE codigoPais = ?";
+            try (Connection conn = ConexionDB.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setString(1, codigo);
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Registro eliminado.");
+
+                limpiarCampos();
+                cargarDatos();
+                llenarComboPaises();
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
+            }
+        }
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        int selectedRow = tableRegistro.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
+            return;
+        }
+
+        try {
+            String codigoOriginal = tableRegistro.getValueAt(selectedRow, 0).toString();
+            String sql = "UPDATE Pais SET nombrePais=?, continentePais=?, poblacionPais=? WHERE codigoPais=?";
+
+            try (Connection conn = ConexionDB.connect();
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                int poblacion;
+                try {
+                    poblacion = Integer.parseInt(jTextField4.getText());
+                } catch (NumberFormatException e) {
+                    throw new Exception("La población debe ser un número.");
+                }
+
+                if (poblacion < 0) throw new Exception("La población no puede ser negativa.");
+
+                pstmt.setString(1, jTextField1.getText()); // Nombre
+                pstmt.setString(2, jTextField2.getText()); // Continente
+                pstmt.setInt(3, poblacion);
+                pstmt.setString(4, codigoOriginal);
+
+                pstmt.executeUpdate();
+                JOptionPane.showMessageDialog(this, "Registro modificado.");
+
+                limpiarCampos();
+                cargarDatos();
+                llenarComboPaises();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -198,6 +356,9 @@ public class Idioma extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnEliminar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
