@@ -9,48 +9,53 @@ package Modelo;
  * @author Victor Vergara
  */
 public class IdiomaPais {
-    private String Idioma;
-    private boolean IdiomaOficial;
-    private int PorcentajDeLidiomaHablado;
+    private int id;
+    private String nombre;
+    private boolean oficial;
+    private String codigo;
 
-    public IdiomaPais() {
+    public IdiomaPais(int id, String nombre, boolean oficial, String codigo) {
+        this.id = id;
+        this.nombre = nombre;
+        this.oficial = oficial;
+        this.codigo = codigo;
     }
 
-    public IdiomaPais(String Idioma, boolean IdiomaOficial, int PorcentajDeLidiomaHablado) {
-        this.Idioma = Idioma;
-        this.IdiomaOficial = IdiomaOficial;
-        this.PorcentajDeLidiomaHablado = PorcentajDeLidiomaHablado;
+    public int getId() {
+        return id;
     }
 
-    public String getIdioma() {
-        return Idioma;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setIdioma(String Idioma) {
-        this.Idioma = Idioma;
+    public String getNombre() {
+        return nombre;
     }
 
-    public boolean isIdiomaOficial() {
-        return IdiomaOficial;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public void setIdiomaOficial(boolean IdiomaOficial) {
-        this.IdiomaOficial = IdiomaOficial;
+    public boolean isOficial() {
+        return oficial;
     }
 
-    public int getPorcentajDeLidiomaHablado() {
-        return PorcentajDeLidiomaHablado;
+    public void setOficial(boolean oficial) {
+        this.oficial = oficial;
     }
 
-    public void setPorcentajDeLidiomaHablado(int PorcentajDeLidiomaHablado) {
-        this.PorcentajDeLidiomaHablado = PorcentajDeLidiomaHablado;
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     @Override
     public String toString() {
-        return "IdiomaPais{" + "Idioma=" + Idioma + ", IdiomaOficial=" + IdiomaOficial + ", PorcentajDeLidiomaHablado=" + PorcentajDeLidiomaHablado + '}';
+        return "IdiomaPais{" + "id=" + id + ", nombre=" + nombre + ", oficial=" + oficial + ", codigo=" + codigo + '}';
     }
 
- 
-    
 }

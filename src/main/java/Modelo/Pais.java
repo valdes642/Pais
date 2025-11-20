@@ -45,6 +45,10 @@ public class Pais {
         this.IdiomaDelPais = IdiomaDelPais;
     }
 
+    public Pais(String string, String string0, String string1, int aInt, boolean aBoolean) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getNombre() {
         return Nombre;
     }
@@ -160,6 +164,10 @@ public class Pais {
     @Override
     public String toString() {
         return "Pais{" + "Nombre=" + Nombre + ", Continente=" + Continente + ", Ciudades=" + Ciudades + ", Region=" + Region + ", Superficie=" + Superficie + ", AnioDeIndependencia=" + AnioDeIndependencia + ", Poblacion=" + Poblacion + ", ExpectativaDeVida=" + ExpectativaDeVida + ", Pib=" + Pib + ", FormaDeGobierno=" + FormaDeGobierno + ", JefeDeestado=" + JefeDeestado + ", Ciudad=" + Ciudad + ", CodigoDelPais=" + CodigoDelPais + ", IdiomaDelPais=" + IdiomaDelPais + '}';
+    }
+
+    public String getNombrePais() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
    

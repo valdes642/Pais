@@ -3,49 +3,78 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Modelo;
+import dao.PaisDAO;
 
 /**
  *
- * @author Santo Tomas
+ * @author profesor benja
  */
 public class Usuario {
-    
-   private String Nombre;
-   private String Contraseña;
+    private int id;
+    private String nombre;
+    private String username;
+    private String password;
+    private String codPais;
 
     public Usuario() {
     }
 
-    public Usuario(String Nombre, String Contraseña) {
-        this.Nombre = Nombre;
-        this.Contraseña = Contraseña;
+    public Usuario(int id, String nombre, String username, String password, String codPais) {
+        this.id = id;
+        this.nombre = nombre;
+        this.username = username;
+        this.password = password;
+        this.codPais = codPais;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return Contraseña;
+    public String getUsername() {
+        return username;
     }
 
-    public void setContraseña(String Contraseña) {
-        this.Contraseña = Contraseña;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCodPais() {
+        return codPais;
+    }
+
+    public void setCodPais(String codPais) {
+        this.codPais = codPais;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Usuario{");
-        sb.append("Nombre=").append(Nombre);
-        sb.append(", Contrase\u00f1a=").append(Contraseña);
-        sb.append('}');
-        return sb.toString();
+        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", username=" + username + ", password=" + password + ", codPais=" + codPais + '}';
     }
-   
-   
+    
+    
+    // metodo para buscar el pais del usuario
+    public Pais pais() {
+        return new PaisDAO().obtenerPorCodigo(codPais);
+    }
 }

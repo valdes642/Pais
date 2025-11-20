@@ -10,6 +10,21 @@ package Vista;
  */
 public class Idioma extends javax.swing.JFrame {
     
+    private void limpiarCampos() {
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextField4.setText("");
+        jTextField5.setText("");
+    
+    private void cargarDatos() {
+        // Aquí va el código para SELECT * FROM Idioma y llenar jTable1
+    }
+
+    private void llenarComboPaises() {
+        // Aquí va el código para llenar el jComboBox1
+    }
+        
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Idioma.class.getName());
 
     /**
@@ -264,7 +279,7 @@ public class Idioma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        int selectedRow = tableRegistro.getSelectedRow();
+        int selectedRow = tjTable1.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
             return;
@@ -293,7 +308,7 @@ public class Idioma extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        int selectedRow = tableRegistro.getSelectedRow();
+        int selectedRow = jTable1.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
             return;
