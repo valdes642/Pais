@@ -567,7 +567,6 @@ String seleccion = jcombotabla.getSelectedItem().toString();
         } else if (seleccion.equals("Idioma")) {
             cargarTablaIdioma();
         }
-    }  
     }//GEN-LAST:event_jcombotablaActionPerformed
     
     /**
@@ -595,7 +594,6 @@ String seleccion = jcombotabla.getSelectedItem().toString();
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Registro_Poblacional_Internacional.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -628,3 +626,4 @@ String seleccion = jcombotabla.getSelectedItem().toString();
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
 
+}
