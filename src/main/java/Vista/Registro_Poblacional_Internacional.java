@@ -2,7 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 package Vista;
 
 import java.sql.Connection;
@@ -13,6 +12,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+
 public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
 
     private TableRowSorter<DefaultTableModel> sorter;
@@ -21,26 +21,41 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
 
-        // Configurar el buscador
+        // 1. Configurar el Sorter
         DefaultTableModel model = (DefaultTableModel) tableRegistro.getModel();
         sorter = new TableRowSorter<>(model);
         tableRegistro.setRowSorter(sorter);
 
-        // Cargar datos iniciales
-        cargarDatos();
-        llenarComboPaises();
+        // 2. Configurar el ComboBox
+        jcombotabla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pais", "Ciudad", "Idioma" }));
+
+        // 3. Cargar datos iniciales
+        cargarTablaPais();
+        llenarComboPaisesSeleccion();
     }
 
-    /**
-     * Carga los datos de la tabla 'Pais' de MySQL a la JTable.
-     */
-    private void cargarDatos() {
+    // ==========================================
+    //          MÉTODOS DE CARGA (VISTAS)
+    // ==========================================
+
+    private void cargarTablaPais() {
         DefaultTableModel model = (DefaultTableModel) tableRegistro.getModel();
-        model.setRowCount(0); // Limpiar tabla
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        
+        model.addColumn("Código");
+        model.addColumn("Nombre");
+        model.addColumn("Continente");
+        model.addColumn("Población");
+        
+        sorter.setModel(model);
 
         String sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais FROM Pais";
 
-        try (Connection conn = ConexionDB.connect();
+        // CAMBIO: Instanciamos la clase ConexionDB como en el tutorial [cite: 9]
+        ConexionDB con = new ConexionDB();
+        
+        try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -53,42 +68,101 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                 });
             }
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al cargar País: " + e.getMessage());
         }
     }
 
-    /**
-     * Llena el jComboBox1 con los nombres de los países desde la BD.
-     */
-    private void llenarComboPaises() {
-        jComboBox1.removeAllItems();
-        jComboBox1.addItem("Seleccione un país...");
+    private void cargarTablaCiudad() {
+        DefaultTableModel model = (DefaultTableModel) tableRegistro.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        
+        model.addColumn("ID");
+        model.addColumn("Nombre Ciudad");
+        model.addColumn("Población");
+        model.addColumn("Pertenece a (País)");
+        
+        sorter.setModel(model);
 
-        String sql = "SELECT nombrePais FROM Pais ORDER BY nombrePais";
+        String sql = "SELECT idCiudad, nombreCiudad, poblacionCiudad, codigoPais FROM Ciudad";
 
-        try (Connection conn = ConexionDB.connect();
+        // CAMBIO: Instanciamos la clase ConexionDB
+        ConexionDB con = new ConexionDB();
+
+        try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                jComboBox1.addItem(rs.getString("nombrePais"));
+                model.addRow(new Object[]{
+                    rs.getInt("idCiudad"),
+                    rs.getString("nombreCiudad"),
+                    rs.getInt("poblacionCiudad"),
+                    rs.getString("codigoPais")
+                });
             }
         } catch (SQLException e) {
-            System.out.println("Error al llenar combo: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al cargar Ciudad: " + e.getMessage());
         }
     }
 
-    /**
-     * Limpia los campos de texto.
-     */
-    private void limpiarCampos() {
-        jTextField3.setText(""); // Código
-        jTextField1.setText(""); // Nombre (Asegúrate de que este campo exista en Diseño)
-        jTextField2.setText(""); // Continente
-        jTextField4.setText(""); // Población
-        if (jComboBox1.getItemCount() > 0) {
-            jComboBox1.setSelectedIndex(0);
+    private void cargarTablaIdioma() {
+        DefaultTableModel model = (DefaultTableModel) tableRegistro.getModel();
+        model.setRowCount(0);
+        model.setColumnCount(0);
+        
+        model.addColumn("ID");
+        model.addColumn("Idioma");
+        model.addColumn("Es Oficial?");
+        model.addColumn("País");
+        
+        sorter.setModel(model);
+
+        String sql = "SELECT idIdioma, nombreIdioma, oficial, codigoPais FROM Idioma";
+
+        // CAMBIO: Instanciamos la clase ConexionDB
+        ConexionDB con = new ConexionDB();
+
+        try (Connection conn = con.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                String esOficial = rs.getBoolean("oficial") ? "Sí" : "No";
+                model.addRow(new Object[]{
+                    rs.getInt("idIdioma"),
+                    rs.getString("nombreIdioma"),
+                    esOficial,
+                    rs.getString("codigoPais")
+                });
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar Idioma: " + e.getMessage());
         }
+    }
+
+  
+    private void llenarComboPaisesSeleccion() {
+        jcombotabla.removeAllItems();
+        jcombotabla.addItem("Seleccione...");
+        
+        ConexionDB con = new ConexionDB(); // Instancia conexión
+        
+        try (Connection conn = con.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery("SELECT nombrePais FROM Pais ORDER BY nombrePais")) {
+            while (rs.next()) {
+                jcombotabla.addItem(rs.getString("nombrePais"));
+            }
+        } catch (SQLException e) { }
+    }
+
+    private void limpiarCampos() {
+        jTextField3.setText(""); 
+        jTextField1.setText(""); 
+        jTextField2.setText(""); 
+        jTextField4.setText(""); 
+        if(jcombotabla.getItemCount() > 0) jcombotabla.setSelectedIndex(0);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,7 +184,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jcombotabla = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
 
@@ -211,10 +285,10 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        jcombotabla.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jcombotabla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                jcombotablaActionPerformed(evt);
             }
         });
 
@@ -251,7 +325,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(btnEliminar)
-                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jcombotabla, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 110, Short.MAX_VALUE)))))
                 .addGap(6, 6, 6)
@@ -282,7 +356,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jcombotabla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -329,25 +403,30 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField4ActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-try {
+String seleccion = jcombotabla.getSelectedItem().toString();
+        if (!seleccion.equals("Pais")) {
+            JOptionPane.showMessageDialog(this, "Por favor cambie a la tabla 'Pais' para agregar registros.");
+            return;
+        }
+
+        try {
             String sql = "INSERT INTO Pais(codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno) VALUES(?,?,?,?,?)";
-            
-            try (Connection conn = ConexionDB.connect();
+            ConexionDB con = new ConexionDB();
+
+            try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
                 String codigo = jTextField3.getText();
-                String nombre = jTextField1.getText(); // Usamos jTextField1 para Nombre
+                String nombre = jTextField1.getText();
                 String continente = jTextField2.getText();
                 int poblacion;
                 
-                // Validación de número
                 try {
                     poblacion = Integer.parseInt(jTextField4.getText());
                 } catch (NumberFormatException e) {
                     throw new Exception("La población debe ser un número entero.");
                 }
 
-                // REGLA DE NEGOCIO: Población no negativa
                 if (poblacion < 0) {
                     throw new Exception("La población no puede ser negativa.");
                 }
@@ -356,22 +435,28 @@ try {
                 pstmt.setString(2, nombre);
                 pstmt.setString(3, continente);
                 pstmt.setInt(4, poblacion);
-                pstmt.setInt(5, 1); // Tipo gobierno por defecto
+                pstmt.setInt(5, 1); 
 
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "País guardado exitosamente.");
                 
                 limpiarCampos();
-                cargarDatos();
-                llenarComboPaises();
+                cargarTablaPais();
+                llenarComboPaisesSeleccion();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-     int selectedRow = tableRegistro.getSelectedRow();
+String seleccion = jcombotabla.getSelectedItem().toString();
+        if (!seleccion.equals("Pais")) {
+            JOptionPane.showMessageDialog(this, "Solo se permite eliminar en la tabla 'Pais'.");
+            return;
+        }
+
+        int selectedRow = tableRegistro.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
             return;
@@ -382,16 +467,19 @@ try {
 
         if (confirm == JOptionPane.YES_OPTION) {
             String sql = "DELETE FROM Pais WHERE codigoPais = ?";
-            try (Connection conn = ConexionDB.connect();
+            
+            // CAMBIO: Instancia conexión
+            ConexionDB con = new ConexionDB();
+
+            try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 pstmt.setString(1, codigo);
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Registro eliminado.");
-                
                 limpiarCampos();
-                cargarDatos();
-                llenarComboPaises();
+                cargarTablaPais();
+                llenarComboPaisesSeleccion();
 
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
@@ -400,11 +488,11 @@ try {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    String textoBusqueda = txtBuscar.getText();
-        if (textoBusqueda.trim().length() == 0) {
+String texto = txtBuscar.getText();
+        if (texto.trim().length() == 0) {
             sorter.setRowFilter(null);
         } else {
-            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + textoBusqueda));
+            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + texto));
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -413,7 +501,13 @@ try {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-    int selectedRow = tableRegistro.getSelectedRow();
+String seleccion = jcombotabla.getSelectedItem().toString();
+        if (!seleccion.equals("Pais")) {
+            JOptionPane.showMessageDialog(this, "Solo se permite modificar en la tabla 'Pais'.");
+            return;
+        }
+
+        int selectedRow = tableRegistro.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
             return;
@@ -423,7 +517,10 @@ try {
             String codigoOriginal = tableRegistro.getValueAt(selectedRow, 0).toString();
             String sql = "UPDATE Pais SET nombrePais=?, continentePais=?, poblacionPais=? WHERE codigoPais=?";
             
-            try (Connection conn = ConexionDB.connect();
+            // CAMBIO: Instancia conexión
+            ConexionDB con = new ConexionDB();
+
+            try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 
                 int poblacion;
@@ -435,61 +532,43 @@ try {
 
                 if (poblacion < 0) throw new Exception("La población no puede ser negativa.");
 
-                pstmt.setString(1, jTextField1.getText()); // Nombre
-                pstmt.setString(2, jTextField2.getText()); // Continente
+                pstmt.setString(1, jTextField1.getText());
+                pstmt.setString(2, jTextField2.getText());
                 pstmt.setInt(3, poblacion);
                 pstmt.setString(4, codigoOriginal);
 
                 pstmt.executeUpdate();
                 JOptionPane.showMessageDialog(this, "Registro modificado.");
-                
                 limpiarCampos();
-                cargarDatos();
-                llenarComboPaises();
+                cargarTablaPais();
+                llenarComboPaisesSeleccion();
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void tableRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableRegistroMouseClicked
- int SelectedRow = tableRegistro.getSelectedRow();
-        if (SelectedRow != -1) {
-            String codigo = tableRegistro.getValueAt(SelectedRow, 0).toString();
-            String nombre = tableRegistro.getValueAt(SelectedRow, 1).toString();
-            String continente = tableRegistro.getValueAt(SelectedRow, 2).toString();
-            String poblacion = tableRegistro.getValueAt(SelectedRow, 3).toString();
 
-            jTextField3.setText(codigo);
-            jTextField1.setText(nombre);
-            jTextField2.setText(continente);
-            jTextField4.setText(poblacion);
-        }
     }//GEN-LAST:event_tableRegistroMouseClicked
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
-        // TODO add your handling code here:
-        if (jComboBox1.getItemCount() > 0 && jComboBox1.getSelectedIndex() > 0) {
-            String nombre = jComboBox1.getSelectedItem().toString();
-            String sql = "SELECT * FROM Pais WHERE nombrePais = ?";
-            
-            try (Connection conn = ConexionDB.connect();
-                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                
-                pstmt.setString(1, nombre);
-                ResultSet rs = pstmt.executeQuery();
-                
-                if (rs.next()) {
-                    jTextField3.setText(rs.getString("codigoPais"));
-                    jTextField1.setText(rs.getString("nombrePais"));
-                    jTextField2.setText(rs.getString("continentePais"));
-                    jTextField4.setText(String.valueOf(rs.getInt("poblacionPais")));
-                }
-            } catch (SQLException e) {
-                System.out.println("Error combo: " + e.getMessage());
-            }
+    private void jcombotablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombotablaActionPerformed
+        // TODO add your handling code her
+        String seleccion = jcombotabla.getSelectedItem().toString();
+        limpiarCampos();
+        
+        if (seleccion.equals("Pais")) {
+            cargarTablaPais();
+            btnAgregar.setEnabled(true);
+            btnModificar.setEnabled(true);
+            btnEliminar.setEnabled(true);
+        } else if (seleccion.equals("Ciudad")) {
+            cargarTablaCiudad();
+        } else if (seleccion.equals("Idioma")) {
+            cargarTablaIdioma();
         }
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }  
+    }//GEN-LAST:event_jcombotablaActionPerformed
     
     /**
      * @param args the command line arguments
@@ -532,7 +611,6 @@ try {
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -545,7 +623,8 @@ try {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JComboBox<String> jcombotabla;
     private javax.swing.JTable tableRegistro;
     private javax.swing.JTextField txtBuscar;
     // End of variables declaration//GEN-END:variables
-}
+

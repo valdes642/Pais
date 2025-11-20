@@ -1,29 +1,26 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package ConexionDB;
+package Vista;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionDB {
+    
 
-    // Configuración para MySQL según tu script
-    private static final String URL = "jdbc:mysql://localhost:3306/mundo";
-    private static final String USER = "root"; 
-    private static final String PASSWORD = "060402"; 
+    Connection con;
 
-    public static Connection connect() {
-        Connection conn = null;
+    public ConexionDB() {
         try {
-            // Conexión a la base de datos 'mundo'
-            conn = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión a MySQL exitosa.");
-        } catch (SQLException e) {
-            System.out.println("Error de conexión: " + e.getMessage());
+     
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mundo", "root", "060402");
+            System.out.println("Conexión Exitosa");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return conn;
+    }
+
+
+    public Connection getConnection() {
+        return con;
     }
 }
