@@ -15,7 +15,7 @@ import Modelo.IdiomaPais;
 
 public class IdiomaPaisDAO implements CrudDAO<IdiomaPais> {
 
-    // INSERTAR
+   
     @Override
     public void insertar(IdiomaPais entidad) {
         String sql = "INSERT INTO Idioma (nombreIdioma, oficial, codigoPais) VALUES (?, ?, ?)";
@@ -33,7 +33,7 @@ public class IdiomaPaisDAO implements CrudDAO<IdiomaPais> {
         }
     }
 
-    // ACTUALIZAR
+    
     @Override
     public void actualizar(IdiomaPais entidad) {
 
@@ -53,7 +53,7 @@ public class IdiomaPaisDAO implements CrudDAO<IdiomaPais> {
         }
     }
 
-    // ELIMINAR
+  
     @Override
     public void eliminar(int id) {
 
@@ -69,7 +69,7 @@ public class IdiomaPaisDAO implements CrudDAO<IdiomaPais> {
         }
     }
 
-    // OBTENER POR ID
+  
     @Override
     public IdiomaPais obtenerPorId(int id) {
 
@@ -97,7 +97,7 @@ public class IdiomaPaisDAO implements CrudDAO<IdiomaPais> {
         return null;
     }
 
-    // LISTAR TODOS
+  
     @Override
     public List<IdiomaPais> listarTodos() {
         List<IdiomaPais> listado;

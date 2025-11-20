@@ -13,14 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import Modelo.Usuario;
 
-//    private int id;
-//    private String nombre;
-//    private String username;
-//    private String password;
-//    private String codPais;
+
 public class UsuarioDAO implements CrudDAO<Usuario> {
 
-    // INSERTAR
+  
     @Override
     public void insertar(Usuario entidad) {
         String sql = "INSERT INTO Usuario (nombre, username, password, codigoPais) VALUES (?, ?, ?, ?)";
@@ -39,7 +35,7 @@ public class UsuarioDAO implements CrudDAO<Usuario> {
         }
     }
 
-    // ACTUALIZAR
+  
     @Override
     public void actualizar(Usuario entidad) {
          String sql = "UPDATE Usuario SET nombre = ?, username = ?, password = ?, codigoPais = ? WHERE idUsuario = ?";
@@ -82,7 +78,7 @@ public class UsuarioDAO implements CrudDAO<Usuario> {
         return false;
     }
 
-    // ELIMINAR
+  
     @Override
     public void eliminar(int id) {
 
@@ -116,7 +112,7 @@ public class UsuarioDAO implements CrudDAO<Usuario> {
         return false;
     }
 
-    // OBTENER POR ID
+ 
     @Override
     public Usuario obtenerPorId(int id) {
 
@@ -216,7 +212,7 @@ public class UsuarioDAO implements CrudDAO<Usuario> {
             ResultSet rs = ps.executeQuery();
             
             while (rs.next()) {
-                return rs.getInt("total"); // como en la query queda el total como tabla ese se llama
+                return rs.getInt("total"); 
             }
 
         } catch (SQLException e) {

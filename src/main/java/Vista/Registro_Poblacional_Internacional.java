@@ -4,6 +4,7 @@
  */
 package Vista;
 
+import ConexionDB.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,7 +54,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         String sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais FROM Pais";
 
         // CAMBIO: Instanciamos la clase ConexionDB como en el tutorial [cite: 9]
-        ConexionDB con = new ConexionDB();
+        Conexion con = new Conexion();
         
         try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
@@ -87,7 +88,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         String sql = "SELECT idCiudad, nombreCiudad, poblacionCiudad, codigoPais FROM Ciudad";
 
         // CAMBIO: Instanciamos la clase ConexionDB
-        ConexionDB con = new ConexionDB();
+        Conexion con = new Conexion();
 
         try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
@@ -121,7 +122,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         String sql = "SELECT idIdioma, nombreIdioma, oficial, codigoPais FROM Idioma";
 
         // CAMBIO: Instanciamos la clase ConexionDB
-        ConexionDB con = new ConexionDB();
+        Conexion con = new Conexion();
 
         try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
@@ -146,7 +147,7 @@ public class Registro_Poblacional_Internacional extends javax.swing.JFrame {
         jcombotabla.removeAllItems();
         jcombotabla.addItem("Seleccione...");
         
-        ConexionDB con = new ConexionDB(); // Instancia conexión
+        Conexion con = new Conexion(); // Instancia conexión
         
         try (Connection conn = con.getConnection();
              Statement stmt = conn.createStatement();
@@ -411,7 +412,7 @@ String seleccion = jcombotabla.getSelectedItem().toString();
 
         try {
             String sql = "INSERT INTO Pais(codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno) VALUES(?,?,?,?,?)";
-            ConexionDB con = new ConexionDB();
+            Conexion con = new Conexion();
 
             try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -469,7 +470,7 @@ String seleccion = jcombotabla.getSelectedItem().toString();
             String sql = "DELETE FROM Pais WHERE codigoPais = ?";
             
             // CAMBIO: Instancia conexión
-            ConexionDB con = new ConexionDB();
+            Conexion con = new Conexion();
 
             try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -518,7 +519,7 @@ String seleccion = jcombotabla.getSelectedItem().toString();
             String sql = "UPDATE Pais SET nombrePais=?, continentePais=?, poblacionPais=? WHERE codigoPais=?";
             
             // CAMBIO: Instancia conexión
-            ConexionDB con = new ConexionDB();
+            Conexion con = new Conexion();
 
             try (Connection conn = con.getConnection();
                  PreparedStatement pstmt = conn.prepareStatement(sql)) {

@@ -21,14 +21,14 @@ public class Conexion {
     private static final String PORT     = "3306";
     private static final String CONN     = "jdbc:mysql://" + HOST + ":" + PORT + "/" + NAME_DB + "?useSSL=false&serverTimezone=UTC";
 
-    // comenzar con el patron singleton
+   
     private static Connection conn;
     
-    private Conexion () {          
+    public Conexion () {          
         try {
-            // Cargar el driver (opcional desde JDBC 4.0, pero se puede incluir)
+           
             Class.forName("com.mysql.cj.jdbc.Driver");
-            // Crear la conexión
+          
             conn = DriverManager.getConnection(CONN, USER, PASSWORD);
             System.out.println("✅ Conexión exitosa a MySQL 8.0.33");
         } catch (ClassNotFoundException e) {
@@ -40,7 +40,7 @@ public class Conexion {
         }
     }
     
-    // Método para obtener la instancia única
+    
     public static Connection getInstancia() throws SQLException {
         if (conn == null || conn.isClosed()) {
             new Conexion();
@@ -48,7 +48,6 @@ public class Conexion {
         return conn;
     }
 
-    // Cierre
     public static void close() {
         try {
             if (conn != null && !conn.isClosed()) {
@@ -59,5 +58,9 @@ public class Conexion {
         } catch (SQLException e) {
             System.out.println("Error al cerrar la conexión: " + e.getMessage());
         }
+    }
+
+    public Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

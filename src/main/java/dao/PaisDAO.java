@@ -36,7 +36,7 @@ public class PaisDAO implements CrudDAO<Pais> {
 
     @Override
     public Pais obtenerPorId(int id) {
-        // este no funciona porque no es por el id la busqueda
+
         
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
