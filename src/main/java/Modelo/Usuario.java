@@ -3,36 +3,30 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Modelo;
-import dao.PaisDAO;
 
-/**
- *
- * @author profesor benja
- */
 public class Usuario {
-    private int id;
+    private int idUsuario;
     private String nombre;
     private String username;
     private String password;
-    private String codPais;
+    private String codigoPais;
 
-    public Usuario() {
-    }
+    public Usuario() {}
 
-    public Usuario(int id, String nombre, String username, String password, String codPais) {
-        this.id = id;
+    public Usuario(int idUsuario, String nombre, String username, String password, String codigoPais) {
+        this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.username = username;
         this.password = password;
-        this.codPais = codPais;
+        this.codigoPais = codigoPais;
     }
 
-    public int getId() {
-        return id;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNombre() {
@@ -59,22 +53,18 @@ public class Usuario {
         this.password = password;
     }
 
-    public String getCodPais() {
-        return codPais;
+    public String getCodigoPais() {
+        return codigoPais;
     }
 
-    public void setCodPais(String codPais) {
-        this.codPais = codPais;
+    public void setCodigoPais(String codigoPais) {
+        this.codigoPais = codigoPais;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" + "id=" + id + ", nombre=" + nombre + ", username=" + username + ", password=" + password + ", codPais=" + codPais + '}';
+        return "Usuario{" + "idUsuario=" + idUsuario + ", nombre=" + nombre + ", username=" + username + ", password=" + password + ", codigoPais=" + codigoPais + '}';
     }
     
     
-    // metodo para buscar el pais del usuario
-    public Pais pais() {
-        return new PaisDAO().obtenerPorCodigo(codPais);
-    }
 }

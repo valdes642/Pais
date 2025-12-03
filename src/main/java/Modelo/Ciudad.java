@@ -4,40 +4,51 @@
  */
 package Modelo;
 
-/**
- *
- * @author Victor Vergara
- */
 public class Ciudad {
-    private String Nombre;
-    private String Pais_al_que_pertenece;
+    private int idCiudad;
+    private String nombreCiudad;
+    private String codigoPais;
     private String Distrito;
-    private int poblacion;
+    private int poblacionCiudad;
+    //JOIN
+    private String paisnombre;
+    private String continente;
 
     public Ciudad() {
-    }
+    }   
 
-    public Ciudad(String Nombre, String Pais_al_que_pertenece, String Distrito, int poblacion) {
-        this.Nombre = Nombre;
-        this.Pais_al_que_pertenece = Pais_al_que_pertenece;
+    public Ciudad(int idCiudad, String nombreCiudad, String codigoPais, String Distrito, int poblacionCiudad, String paisnombre, String continente) {
+        this.idCiudad = idCiudad;
+        this.nombreCiudad = nombreCiudad;
+        this.codigoPais = codigoPais;
         this.Distrito = Distrito;
-        this.poblacion = poblacion;
+        this.poblacionCiudad = poblacionCiudad;
+        this.paisnombre = paisnombre;
+        this.continente = continente;
     }
 
-    public String getNombre() {
-        return Nombre;
+    public int getIdCiudad() {
+        return idCiudad;
     }
 
-    public void setNombre(String Nombre) {
-        this.Nombre = Nombre;
+    public void setIdCiudad(int idCiudad) {
+        this.idCiudad = idCiudad;
     }
 
-    public String getPais_al_que_pertenece() {
-        return Pais_al_que_pertenece;
+    public String getNombreCiudad() {
+        return nombreCiudad;
     }
 
-    public void setPais_al_que_pertenece(String Pais_al_que_pertenece) {
-        this.Pais_al_que_pertenece = Pais_al_que_pertenece;
+    public void setNombreCiudad(String nombreCiudad) {
+        this.nombreCiudad = nombreCiudad;
+    }
+
+    public String getCodigoPais() {
+        return codigoPais;
+    }
+
+    public void setCodigoPais(String codigoPais) {
+        this.codigoPais = codigoPais;
     }
 
     public String getDistrito() {
@@ -48,18 +59,33 @@ public class Ciudad {
         this.Distrito = Distrito;
     }
 
-    public int getPoblacion() {
-        return poblacion;
+    public int getPoblacionCiudad() {
+        return poblacionCiudad;
     }
 
-    public void setPoblacion(int poblacion) {
-        this.poblacion = poblacion;
+    public void setPoblacionCiudad(int poblacionCiudad) {
+        this.poblacionCiudad = poblacionCiudad;
+    }
+
+    public String getPaisnombre() {
+        return paisnombre;
+    }
+
+    public void setPaisnombre(String paisnombre) {
+        this.paisnombre = paisnombre;
+    }
+
+    public String getContinente() {
+        return continente;
+    }
+
+    public void setContinente(String continente) {
+        this.continente = continente;
     }
 
     @Override
     public String toString() {
-        return "Ciudad{" + "Nombre=" + Nombre + ", Pais_al_que_pertenece=" + Pais_al_que_pertenece + ", Distrito=" + Distrito + ", poblacion=" + poblacion + '}';
+        return "Ciudad{" + "idCiudad=" + idCiudad + ", nombreCiudad=" + nombreCiudad + ", codigoPais=" + codigoPais + ", Distrito=" + Distrito + ", poblacionCiudad=" + poblacionCiudad + ", paisnombre=" + paisnombre + ", continente=" + continente + '}';
     }
-    
     
 }
