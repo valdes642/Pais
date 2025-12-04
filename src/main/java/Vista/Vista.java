@@ -774,13 +774,12 @@ if (buscarPorCodigo) {
     // Si no hay código, buscar por continente.
     // **NOTA:** Si quieres que se muestren *todos* los países cuando NO se introduce un código y el continente es "Todos", 
     // debes agregar una lógica aquí para modificar 'sql'. Por ejemplo:
-    /*
+    
     if (continenteSeleccionado.equals("Todos")) {
         sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais";
     } else {
         sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
     }
-    */
     sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
 }
 
