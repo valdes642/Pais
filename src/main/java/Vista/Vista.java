@@ -260,6 +260,11 @@ public class Vista extends javax.swing.JFrame {
                 "Código", "Nombre", "Continente", "Población", "Tipo de gobierno"
             }
         ));
+        jTablePais.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTablePaisMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTablePais);
         if (jTablePais.getColumnModel().getColumnCount() > 0) {
             jTablePais.getColumnModel().getColumn(0).setHeaderValue("Código");
@@ -856,12 +861,85 @@ try (Connection conn = Conexion.ConexionBD.conectar();
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-        //Acá codificará el Evento para Actualizar un País.
+                                            
+        // 1. Validaciones básicas
+        if (txtCodigo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor, escribe el CÓDIGO del país que deseas modificar.", "Falta Código", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Obtener los datos del formulario
+        String codigo = txtCodigo.getText().trim(); // Esta es la llave (PK)
+        String nombre = txtNombre.getText().trim();
+        String continente = cboxContinente.getSelectedItem().toString();
+        boolean esDemocracia = chkTipoGobierno.isSelected();
+        int poblacion = 0;
+
+        try {
+            poblacion = Integer.parseInt(txtPoblacion.getText().trim());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La población debe ser un número válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // 3. Sentencia SQL UPDATE
+        // Nota: NO modificamos el código (WHERE codigoPais = ?), solo los otros campos.
+        String sql = "UPDATE Pais SET nombrePais = ?, continentePais = ?, poblacionPais = ?, tipoGobierno = ? WHERE codigoPais = ?";
+
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Asignar valores a los ?
+            ps.setString(1, nombre);
+            ps.setString(2, continente);
+            ps.setInt(3, poblacion);
+            ps.setBoolean(4, esDemocracia);
+            ps.setString(5, codigo); // El último ? es el del WHERE
+
+            int filasAfectadas = ps.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                JOptionPane.showMessageDialog(this, "País modificado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarDatosPais(); // Recargar la tabla para ver los cambios
+                
+                // Opcional: Limpiar campos
+                txtCodigo.setText("");
+                txtNombre.setText("");
+                txtPoblacion.setText("");
+                chkTipoGobierno.setSelected(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se encontró ningún país con el código: " + codigo, "No encontrado", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage(), "Error BD", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jTablePaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTablePaisMouseClicked
+        // TODO add your handling code here:
+        // Obtener la fila donde se hizo clic
+        int fila = jTablePais.getSelectedRow();
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+
+        // Pasar datos de la tabla a las cajas de texto
+        txtCodigo.setText(model.getValueAt(fila, 0).toString());
+        txtNombre.setText(model.getValueAt(fila, 1).toString());
+        
+        // Seleccionar el continente correcto en el ComboBox
+        String continente = model.getValueAt(fila, 2).toString();
+        cboxContinente.setSelectedItem(continente);
+        
+        txtPoblacion.setText(model.getValueAt(fila, 3).toString());
+        
+        // Configurar el CheckBox
+        String gobierno = model.getValueAt(fila, 4).toString();
+        chkTipoGobierno.setSelected(gobierno.equals("Democracia"));
+    }//GEN-LAST:event_jTablePaisMouseClicked
     /**
      * @param args the command line arguments
      */
