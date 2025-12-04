@@ -750,6 +750,44 @@ public class Vista extends javax.swing.JFrame {
 
     private void cboxContinenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxContinenteActionPerformed
         // TODO add your handling code here:
+        String continenteSeleccionado = cboxContinente.getSelectedItem().toString();
+
+        // 2. Limpiar la tabla visualmente antes de cargar los nuevos datos
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+        model.setRowCount(0);
+
+        // 3. Preparar la consulta SQL
+        String sql = "SELECT * FROM Pais WHERE continentePais = ?";
+
+        // 4. Conectar y ejecutar la búsqueda
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, continenteSeleccionado);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                // Obtener datos de la base de datos
+                String codigo = rs.getString("codigoPais");
+                String nombre = rs.getString("nombrePais");
+                String cont = rs.getString("continentePais");
+                int poblacion = rs.getInt("poblacionPais");
+                boolean tipoGobierno = rs.getBoolean("tipoGobierno");
+
+                // Agregar fila a la tabla
+                Object[] fila = {
+                    codigo, 
+                    nombre, 
+                    cont, 
+                    poblacion, 
+                    tipoGobierno ? "Democracia" : "Otro"
+                };
+                model.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al filtrar por continente: " + e.getMessage());
+        }
     }//GEN-LAST:event_cboxContinenteActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
