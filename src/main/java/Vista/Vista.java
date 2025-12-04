@@ -772,10 +772,34 @@ public class Vista extends javax.swing.JFrame {
 
         // 3. Agregar filtros dinámicamente
 
-        // -- Filtro por CÓDIGO (Búsqueda exacta)
-        if (!codigo.isEmpty()) {
-            sql.append(" AND codigoPais = ?");
-            parametros.add(codigo);
+if (buscarPorCodigo) {
+    // Si hay código, buscar SÓLO por código.
+    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE codigoPais = ?";
+} else {
+    // Si no hay código, buscar por continente.
+    // **NOTA:** Si quieres que se muestren *todos* los países cuando NO se introduce un código y el continente es "Todos", 
+    // debes agregar una lógica aquí para modificar 'sql'. Por ejemplo:
+    
+    if (continenteSeleccionado.equals("Todos")) {
+        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais";
+    } else {
+        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
+    }
+    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
+}
+
+// Se usa try-with-resources para Connection y PreparedStatement
+try (Connection conn = Conexion.ConexionBD.conectar();
+     PreparedStatement ps = conn.prepareStatement(sql)) {
+
+    // Se asignan los parámetros
+    if (buscarPorCodigo) {
+        ps.setString(1, codigoBuscado);
+    } else {
+        // Se maneja el caso donde el continente podría no ser un parámetro si la lógica superior lo modifica (ej. "Todos")
+        /*
+        if (!continenteSeleccionado.equals("Todos")) {
+            ps.setString(1, continenteSeleccionado);
         }
 
         // -- Filtro por NOMBRE (Búsqueda parcial con LIKE)
