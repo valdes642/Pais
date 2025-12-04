@@ -1,13 +1,62 @@
 package Vista;
 
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import Controles.CiudadControl;
+import Modelo.Ciudad;
+
+
+import javax.swing.table.DefaultTableModel;
+
 public class Vista extends javax.swing.JFrame {
 
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaCiudad.class.getName());
+    
     public Vista() {
         initComponents();
+        buscarCiudades();
 
     }
 
-    
+    private void buscarCiudades() {
+        
+        DefaultTableModel Modelo = new DefaultTableModel(
+                new Object[]{"ID", "Nombre", "Distrito", "Cód. País", "Población"}, 0
+        );
+
+        String id = txtCodigo.getText();
+        String ciudad = txtNombre.getText();
+        String continente = (String) cboxContinente.getSelectedItem();
+        String poblacion = txtPoblacion.getText();
+        String tipoGobierno = chkTipoGobierno.getText();
+
+        //Uso De Controles
+        Controles.CiudadControl dao = new Controles.CiudadControl();
+        java.util.List<Modelo.Ciudad> lista = dao.listarCiudades(id, ciudad, continente, poblacion, tipoGobierno);
+
+        for (Modelo.Ciudad c : lista) {
+            Modelo.addRow(new Object[]{
+                c.getIdCiudad(),
+                c.getNombreCiudad(),
+                c.getDistrito(),
+                c.getCodigoPais(),
+                c.getPoblacionCiudad()
+            });
+        }
+
+        if (lista.isEmpty()) {
+            System.out.println("No se encontraron resultados.");
+        } else {
+            System.out.println(lista.size() + " ciudades cargadas.");
+        }
+
+        jTablePais.setModel(Modelo);
+    }
     
     
     
@@ -144,6 +193,11 @@ public class Vista extends javax.swing.JFrame {
         chkTipoGobierno.setText("Democracia");
 
         cboxContinente.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Asia", "Europa", "America", "Africa", "Oceania", "Antarctica" }));
+        cboxContinente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboxContinenteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelPaisesLayout = new javax.swing.GroupLayout(jPanelPaises);
         jPanelPaises.setLayout(jPanelPaisesLayout);
@@ -392,6 +446,10 @@ public class Vista extends javax.swing.JFrame {
     private void btnConsultarIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarIdiomaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConsultarIdiomaActionPerformed
+
+    private void cboxContinenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxContinenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboxContinenteActionPerformed
     /**
      * @param args the command line arguments
      */
