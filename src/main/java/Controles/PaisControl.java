@@ -12,4 +12,12 @@ import Conexion.ConexionBD;
 
 public class PaisControl {
 
+    public List<Pais> listarPaises(String codigo, String nombre, String continente, String poblacion, String tipoGobierno) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<Pais> listarPaises(String codigo, String nombre, String continente, String poblacion, boolean tipoGobierno) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }

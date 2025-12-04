@@ -23,6 +23,10 @@ public class ConexionBD {
     private static final String CONN_URL = "jdbc:mysql://" + HOST + ":" + PORT + "/" + NAME_DB + "?useSSL=false&serverTimezone=UTC";
     
     private static Connection conexion = null;
+
+    public static Connection conectar() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
     private ConexionBD() {
     }
