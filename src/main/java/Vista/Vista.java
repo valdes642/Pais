@@ -1,16 +1,41 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 package Vista;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.swing.JFrame;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.JOptionPane;
-import java.util.List;
-import java.util.ArrayList;
-import Controles.PaisControl;
-import Controles.CiudadControl;
-import Controles.IdiomaControl;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+
+import javax.swing.table.TableRowSorter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import java.awt.Desktop;
+import java.net.URI;
 import Conexion.ConexionBD;
+
+// Importa las clases necesarias de SQL
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import Controles.CiudadControl;
+import Modelo.Ciudad;
 
 
 
@@ -34,7 +59,7 @@ public class Vista extends javax.swing.JFrame {
     private void cargarDatosPais() {
     // Definir columnas explícitamente
     DefaultTableModel Modelo = new DefaultTableModel(
-            new Object[]{"Código", "Nombre", "Continente", "Población", "Tipo Gobierno"}, 0
+            new Object[]{"Código", "Nombre", "Continente", "Población", "Tipo Gobierno"},0
     );
 
     // Obtener filtros si los tuvieras (ejemplo: txtNombrePais, etc.)
@@ -43,7 +68,6 @@ public class Vista extends javax.swing.JFrame {
     String continente = cboxContinente.getSelectedItem() != null 
         ? cboxContinente.getSelectedItem().toString() 
         : "";
-
     String poblacion = txtPoblacion.getText();
     boolean tipoGobierno = chkTipoGobierno.isSelected();
 
@@ -73,7 +97,7 @@ public class Vista extends javax.swing.JFrame {
     // Asignar modelo a la tabla
     jTablePais.setModel(Modelo);
 }
-
+    
     
     private void cargarDatosCiudad() {
     DefaultTableModel model = (DefaultTableModel) jTableCiudades.getModel();
@@ -486,7 +510,42 @@ public class Vista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarCiudadActionPerformed
+    // 1. Obtener el país seleccionado (se asume que el ComboBox contiene el nombre del país)
+    String nombrePaisSeleccionado = (String) jcboxPais.getSelectedItem();
+    
+    // 2. Limpiar la tabla
+    DefaultTableModel model = (DefaultTableModel) jTableCiudades.getModel();
+    model.setRowCount(0);
 
+    // 3. Consultar la base de datos
+    // NOTA: Se asume que la tabla Ciudad tiene un campo 'nombrePais' o 'codigoPais' 
+    // que referencia al país (esto dependerá de tu esquema de BD real). 
+    // Usaré 'nombrePais' por simplicidad, ajusta a tu modelo.
+    String sql = "SELECT c.nombreCiudad, c.poblacionCiudad " +
+                 "FROM Ciudad c JOIN Pais p ON c.codigoPais = p.codigoPais " + // Asume relación con Pais
+                 "WHERE p.nombrePais = ?"; 
+
+    try (Connection conn = Conexion.ConexionBD.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, nombrePaisSeleccionado);
+        try (ResultSet rs = ps.executeQuery()) {
+            boolean hayResultados = false;
+            while (rs.next()) {
+                hayResultados = true;
+                String nombreCiudad = rs.getString("nombreCiudad");
+                int poblacion = rs.getInt("poblacionCiudad");
+                
+                model.addRow(new Object[]{nombreCiudad, poblacion});
+            }
+            if (!hayResultados) {
+                JOptionPane.showMessageDialog(this, "No hay ciudades registradas para " + nombrePaisSeleccionado, "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al consultar ciudades: " + e.getMessage(), "Error BD", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnConsultarCiudadActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
