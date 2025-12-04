@@ -16,6 +16,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import Controles.CiudadControl;
 import Modelo.Ciudad;
+import java.awt.event.ActionEvent;
 
 
 import javax.swing.table.DefaultTableModel;
@@ -164,7 +165,7 @@ public class Vista extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Volver = new javax.swing.JTabbedPane();
         jPanelPaises = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         btnModificar = new javax.swing.JButton();
@@ -206,7 +207,7 @@ public class Vista extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableCiudades3 = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnVolver = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -377,7 +378,7 @@ public class Vista extends javax.swing.JFrame {
                 .addGap(21, 21, 21))
         );
 
-        jTabbedPane1.addTab("Paises", jPanelPaises);
+        Volver.addTab("Paises", jPanelPaises);
 
         jTableCiudades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -443,7 +444,7 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Ciudades", jPanelCiudades);
+        Volver.addTab("Ciudades", jPanelCiudades);
 
         jTableCiudades1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -509,7 +510,7 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Idiomas", jPanelCiudades1);
+        Volver.addTab("Idiomas", jPanelCiudades1);
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Argentina", "Brasil", "Chile" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
@@ -607,15 +608,15 @@ public class Vista extends javax.swing.JFrame {
                     .addGap(82, 82, 82)))
         );
 
-        jTabbedPane1.addTab("Comparacion", jPanel1);
+        Volver.addTab("Comparacion", jPanel1);
 
-        jButton3.setText("Volver");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnVolver.setText("Volver");
+        btnVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnVolverActionPerformed(evt);
             }
         });
-        jTabbedPane1.addTab("Volver", jButton3);
+        Volver.addTab("Volver", btnVolver);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -623,12 +624,12 @@ public class Vista extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jTabbedPane1)
+                .addComponent(Volver)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(Volver, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -725,6 +726,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTabbedPane Volver;
     private javax.swing.JButton btnComparar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnConsultarCiudad;
@@ -732,8 +734,10 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
+    private javax.swing.JButton btnVolver;
     private javax.swing.JComboBox<String> cboxContinente;
     private javax.swing.JCheckBox chkTipoGobierno;
+    private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
@@ -760,7 +764,6 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTableCiudades;
     private javax.swing.JTable jTableCiudades1;
     private javax.swing.JTable jTableCiudades2;
