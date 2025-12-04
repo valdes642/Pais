@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import Controles.CiudadControl;
+import Controles.PaisControl;
 import Modelo.Ciudad;
+import Modelo.Pais;
 import java.awt.event.ActionEvent;
 
 
@@ -40,6 +42,18 @@ public class Vista extends javax.swing.JFrame {
     }
 
     private void cargarDatosPais() {
+        PaisControl pcontrol = new PaisControl();
+        
+        List<Pais> paises = pcontrol.listar();
+        
+        String[] datos = new String[paises.size()];
+        
+        for(int i = 0; i < paises.size(); i++) {
+            datos[i] = paises.get(i).getNombrePais();
+        }
+         
+        
+        
         DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
         model.setRowCount(0);
 

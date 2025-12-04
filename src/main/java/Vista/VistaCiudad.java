@@ -159,6 +159,15 @@ public class VistaCiudad extends javax.swing.JFrame {
             }
         });
 
+        txtPoblacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPoblacionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPoblacionKeyTyped(evt);
+            }
+        });
+
         jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 36)); // NOI18N
         jLabel6.setText("Registro de Ciudades");
 
@@ -344,6 +353,19 @@ public class VistaCiudad extends javax.swing.JFrame {
     vista.setVisible(true);
     dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void txtPoblacionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPoblacionKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtPoblacionKeyReleased
+
+    private void txtPoblacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPoblacionKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+    // Si no es un dígito y no es borrar, lo consume (no lo escribe)
+    if (!Character.isDigit(c) && c != java.awt.event.KeyEvent.VK_BACK_SPACE) {
+        evt.consume();
+    }
+    }//GEN-LAST:event_txtPoblacionKeyTyped
 
     
     
