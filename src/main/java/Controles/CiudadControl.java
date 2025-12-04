@@ -15,6 +15,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CiudadControl {
+    
+    //Boton de agregar 
+    
+    public boolean agregarCiudad(Ciudad ciudad) {
+        String sql = "INSERT INTO city (Name, CountryCode, District, Population) VALUES (?, ?, ?, ?)";
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, ciudad.getNombreCiudad());
+            ps.setString(2, ciudad.getCodigoPais());
+            ps.setString(3, ciudad.getDistrito());
+            ps.setInt(4, ciudad.getPoblacionCiudad());
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al agregar ciudad: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    //Boton de Modificar 
+    public boolean modificarCiudad(Ciudad ciudad) {
+        String sql = "UPDATE city SET Name = ?, CountryCode = ?, District = ?, Population = ? WHERE ID = ?";
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, ciudad.getNombreCiudad());
+            ps.setString(2, ciudad.getCodigoPais());
+            ps.setString(3, ciudad.getDistrito());
+            ps.setInt(4, ciudad.getPoblacionCiudad());
+            ps.setInt(5, ciudad.getIdCiudad()); // Usa el ID para la cláusula WHERE
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al modificar ciudad: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    //Boton de ELiminar
+    public boolean eliminarCiudad(int idCiudad) {
+        String sql = "DELETE FROM city WHERE ID = ?";
+        try (Connection conn = ConexionBD.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, idCiudad);
+
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Error al eliminar ciudad: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    
     public List<Ciudad> listarCiudades(String idStr, String nombre, String distrito, String codigoPais, String poblacionStr) {
         List<Ciudad> lista = new ArrayList<>();
 

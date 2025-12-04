@@ -94,7 +94,11 @@ public class VistaLogin extends javax.swing.JFrame {
             }
         });
 
-        txtpassword.setText("jPasswordField1");
+        txtpassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpasswordActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,6 +169,10 @@ public class VistaLogin extends javax.swing.JFrame {
     vista.setVisible(true);
     dispose();
     }//GEN-LAST:event_btnNosotrosActionPerformed
+
+    private void txtpasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtpasswordActionPerformed
 
     /**
      * @param args the command line arguments

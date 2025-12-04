@@ -6,6 +6,8 @@ Vista\VistaNosotros$1.class
 Conexion\ConexionBD.class
 Controles\IdiomaControl.class
 Vista\VistaCiudad$3.class
+Vista\VistaCiudad$7.class
+Vista\VistaLogin$5.class
 Vista\VistaCiudad$2.class
 Vista\VistaIdioma.class
 Modelo\Idioma.class
