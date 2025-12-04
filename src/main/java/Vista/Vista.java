@@ -121,6 +121,38 @@ public class Vista extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Error al cargar datos de idiomas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
     }
+    private String obtenerCodigoPais(String nombrePais) {
+        if (nombrePais == null) return "";
+        if (nombrePais.equals("Argentina")) return "ARG";
+        if (nombrePais.equals("Brasil")) return "BRA";
+        if (nombrePais.equals("Chile")) return "CHL";
+        return "";
+    }
+
+    // Método reutilizable para llenar cualquier tabla según el país
+    private void llenarTablaComparacion(javax.swing.JTable tabla, String codigoPais) {
+        DefaultTableModel model = (DefaultTableModel) tabla.getModel();
+        model.setRowCount(0); // Limpiar tabla
+
+        String sql = "SELECT nombreCiudad, poblacionCiudad FROM Ciudad WHERE codigoPais = ?";
+
+        // Usamos ConexionNueva como en tu método cargarDatosPais
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, codigoPais);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String ciudad = rs.getString("nombreCiudad");
+                int poblacion = rs.getInt("poblacionCiudad");
+                model.addRow(new Object[]{ciudad, poblacion});
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar comparación: " + e.getMessage());
+        }
+    }
     
     
     /**
@@ -170,7 +202,7 @@ public class Vista extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jComboBox3 = new javax.swing.JComboBox<>();
         jComboBox4 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnComparar = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTableCiudades2 = new javax.swing.JTable();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -479,10 +511,25 @@ public class Vista extends javax.swing.JFrame {
         jTabbedPane1.addTab("Idiomas", jPanelCiudades1);
 
         jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Argentina", "Brasil", "Chile" }));
+        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox3ActionPerformed(evt);
+            }
+        });
 
         jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Argentina", "Brasil", "Chile" }));
+        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox4ActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Comparar");
+        btnComparar.setText("Comparar");
+        btnComparar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCompararActionPerformed(evt);
+            }
+        });
 
         jTableCiudades2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -526,7 +573,7 @@ public class Vista extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(52, 52, 52)
-                        .addComponent(jButton1)
+                        .addComponent(btnComparar)
                         .addGap(45, 45, 45)
                         .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -545,10 +592,10 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btnComparar))
                 .addGap(49, 49, 49)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(87, Short.MAX_VALUE))
@@ -605,6 +652,33 @@ public class Vista extends javax.swing.JFrame {
     private void cboxContinenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxContinenteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboxContinenteActionPerformed
+
+    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox3ActionPerformed
+
+    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox4ActionPerformed
+
+    private void btnCompararActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCompararActionPerformed
+        // TODO add your handling code here:
+        String nombrePaisIzquierda = jComboBox3.getSelectedItem().toString();
+        String nombrePaisDerecha = jComboBox4.getSelectedItem().toString();
+
+        // 2. Obtener los códigos (ARG, BRA, CHL)
+        String codigoIzquierda = obtenerCodigoPais(nombrePaisIzquierda);
+        String codigoDerecha = obtenerCodigoPais(nombrePaisDerecha);
+
+        // 3. Llenar las tablas usando el método auxiliar
+        llenarTablaComparacion(jTableCiudades2, codigoIzquierda);
+        llenarTablaComparacion(jTableCiudades3, codigoDerecha);
+        
+        // Opcional: Mensaje si los paises son iguales
+        if (codigoIzquierda.equals(codigoDerecha)) {
+            JOptionPane.showMessageDialog(this, "Has seleccionado el mismo país en ambos lados.", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_btnCompararActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -642,6 +716,7 @@ public class Vista extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnComparar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnConsultarCiudad;
     private javax.swing.JButton btnConsultarIdioma;
@@ -650,7 +725,6 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JComboBox<String> cboxContinente;
     private javax.swing.JCheckBox chkTipoGobierno;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
