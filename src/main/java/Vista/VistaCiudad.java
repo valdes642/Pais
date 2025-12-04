@@ -297,7 +297,7 @@ public class VistaCiudad extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-       buscarCiudades();
+     buscarCiudades();
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -317,23 +317,18 @@ public class VistaCiudad extends javax.swing.JFrame {
     }//GEN-LAST:event_txtCodigoPaisActionPerformed
 
     private void btnAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregar1ActionPerformed
-    try {
-        String nombre = txtNombre.getText().trim();
-        String codigo = txtCodigoPais.getText().trim();
-        String distrito = txtDistrito.getText().trim();
-        int poblacion = Integer.parseInt(txtPoblacion.getText().trim());
-
-        // El ID se pone a 0 ya que la BD lo generará automáticamente
-        Ciudad nuevaCiudad = new Ciudad(0, nombre, codigo, distrito, poblacion, null, null);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "La Población debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
-    }
+    agregarCiudad();
     }//GEN-LAST:event_btnAgregar1ActionPerformed
 
     private void txtcodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcodigoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtcodigoActionPerformed
 
+    
+    
+    
+    
+    
     /**
      * @param args the command line arguments
      */
