@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
-
+import java.util.List;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -758,6 +758,89 @@ public class Vista extends javax.swing.JFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         //Acá codificará el Evento para Eliminar un País.
+        // 1. Iniciar la construcción de la consulta
+        // "WHERE 1=1" es un truco para poder agregar "AND ..." libremente después
+        StringBuilder sql = new StringBuilder("SELECT * FROM Pais WHERE 1=1");
+        List<Object> parametros = new ArrayList<>();
+
+        // 2. Recolectar datos de la interfaz
+        String codigo = txtCodigo.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String poblacionTexto = txtPoblacion.getText().trim();
+        String continente = cboxContinente.getSelectedItem().toString();
+        boolean esDemocracia = chkTipoGobierno.isSelected();
+
+        // 3. Agregar filtros dinámicamente
+
+        // -- Filtro por CÓDIGO (Búsqueda exacta)
+        if (!codigo.isEmpty()) {
+            sql.append(" AND codigoPais = ?");
+            parametros.add(codigo);
+        }
+
+        // -- Filtro por NOMBRE (Búsqueda parcial con LIKE)
+        if (!nombre.isEmpty()) {
+            sql.append(" AND nombrePais LIKE ?");
+            parametros.add("%" + nombre + "%");
+        }
+
+        // -- Filtro por CONTINENTE
+        // Nota: Como el ComboBox siempre tiene algo seleccionado, siempre filtrará por esto.
+        // Si quieres que busque "cualquiera", deberías agregar una opción "Todos" al ComboBox.
+        sql.append(" AND continentePais = ?");
+        parametros.add(continente);
+
+        // -- Filtro por TIPO DE GOBIERNO
+        // Igual que arriba, filtrará por lo que esté marcado o desmarcado
+        sql.append(" AND tipoGobierno = ?");
+        parametros.add(esDemocracia);
+
+        // -- Filtro por POBLACIÓN (Solo si escribieron un número)
+        if (!poblacionTexto.isEmpty()) {
+            try {
+                int poblacion = Integer.parseInt(poblacionTexto);
+                sql.append(" AND poblacionPais = ?"); // O puedes usar >= para "mayor a"
+                parametros.add(poblacion);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "La población debe ser un número válido.");
+                return; // Detener si el número está mal escrito
+            }
+        }
+
+        // 4. Ejecutar la consulta final
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+        model.setRowCount(0); // Limpiar tabla
+
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+
+            // Asignar los parámetros a los signos de interrogación (?)
+            for (int i = 0; i < parametros.size(); i++) {
+                ps.setObject(i + 1, parametros.get(i));
+            }
+
+            ResultSet rs = ps.executeQuery();
+            boolean hayResultados = false;
+
+            while (rs.next()) {
+                hayResultados = true;
+                Object[] fila = {
+                    rs.getString("codigoPais"),
+                    rs.getString("nombrePais"),
+                    rs.getString("continentePais"),
+                    rs.getInt("poblacionPais"),
+                    rs.getBoolean("tipoGobierno") ? "Democracia" : "Otro"
+                };
+                model.addRow(fila);
+            }
+
+            if (!hayResultados) {
+                JOptionPane.showMessageDialog(this, "No se encontraron resultados con esos criterios.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error en la consulta: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
