@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
 
-
+import java.util.List;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -757,15 +757,20 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-String codigoBuscado = txtCodigo.getText().trim();
-// Asumiendo que cboxContinente SIEMPRE tiene un item seleccionado (ej: "Todos" o un continente válido)
-String continenteSeleccionado = cboxContinente.getSelectedItem().toString(); 
+        //Acá codificará el Evento para Eliminar un País.
+        // 1. Iniciar la construcción de la consulta
+        // "WHERE 1=1" es un truco para poder agregar "AND ..." libremente después
+        StringBuilder sql = new StringBuilder("SELECT * FROM Pais WHERE 1=1");
+        List<Object> parametros = new ArrayList<>();
 
-DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
-model.setRowCount(0);
+        // 2. Recolectar datos de la interfaz
+        String codigo = txtCodigo.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String poblacionTexto = txtPoblacion.getText().trim();
+        String continente = cboxContinente.getSelectedItem().toString();
+        boolean esDemocracia = chkTipoGobierno.isSelected();
 
-String sql;
-boolean buscarPorCodigo = !codigoBuscado.isEmpty();
+        // 3. Agregar filtros dinámicamente
 
 if (buscarPorCodigo) {
     // Si hay código, buscar SÓLO por código.
@@ -796,63 +801,70 @@ try (Connection conn = Conexion.ConexionBD.conectar();
         if (!continenteSeleccionado.equals("Todos")) {
             ps.setString(1, continenteSeleccionado);
         }
-        */
-        ps.setString(1, continenteSeleccionado);
-    }
 
-    // Se ejecuta la consulta
-    ResultSet rs = ps.executeQuery();
+        // -- Filtro por NOMBRE (Búsqueda parcial con LIKE)
+        if (!nombre.isEmpty()) {
+            sql.append(" AND nombrePais LIKE ?");
+            parametros.add("%" + nombre + "%");
+        }
 
-    boolean hayResultados = false;
+        // -- Filtro por CONTINENTE
+        // Nota: Como el ComboBox siempre tiene algo seleccionado, siempre filtrará por esto.
+        // Si quieres que busque "cualquiera", deberías agregar una opción "Todos" al ComboBox.
+        sql.append(" AND continentePais = ?");
+        parametros.add(continente);
 
-    // Se procesan los resultados
-    while (rs.next()) {
-        hayResultados = true;
+        // -- Filtro por TIPO DE GOBIERNO
+        // Igual que arriba, filtrará por lo que esté marcado o desmarcado
+        sql.append(" AND tipoGobierno = ?");
+        parametros.add(esDemocracia);
 
-        // Se obtienen los datos. Usar getInt y getBoolean directamente puede ser más limpio si la columna 
-        // NO acepta NULLS, pero el código original ya maneja bien los objetos para NULLS.
-        String codigo = rs.getString("codigoPais");
-        String nombre = rs.getString("nombrePais");
-        String continente = rs.getString("continentePais");
-        
-        // Manejo de valores que pueden ser NULL en la BD
-        // El código original ya maneja esto correctamente
-        Object poblacionObj = rs.getObject("poblacionPais");
-        Integer poblacion = (poblacionObj != null) ? (Integer) poblacionObj : null;
+        // -- Filtro por POBLACIÓN (Solo si escribieron un número)
+        if (!poblacionTexto.isEmpty()) {
+            try {
+                int poblacion = Integer.parseInt(poblacionTexto);
+                sql.append(" AND poblacionPais = ?"); // O puedes usar >= para "mayor a"
+                parametros.add(poblacion);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "La población debe ser un número válido.");
+                return; // Detener si el número está mal escrito
+            }
+        }
 
-        Object tipoGobiernoObj = rs.getObject("tipoGobierno");
-        // Si tipoGobierno es BIT o BOOLEAN, se puede usar rs.getBoolean, pero rs.getObject y casting es más robusto si es nullable.
-        // Se asume el mismo manejo del original: un Boolean (TRUE/FALSE) o NULL.
-        Boolean tipoGobierno = (tipoGobiernoObj != null) ? (Boolean) tipoGobiernoObj : null; 
+        // 4. Ejecutar la consulta final
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+        model.setRowCount(0); // Limpiar tabla
 
-        // Se preparan los datos para la fila de la tabla
-        Object[] fila = {
-            (codigo != null ? codigo : "N/A"),
-            (nombre != null ? nombre : "N/A"),
-            (continente != null ? continente : "N/A"),
-            (poblacion != null ? poblacion.toString() : "N/A"), // Convertir Integer a String para la tabla
-            // Mapeo del booleano a texto
-            (tipoGobierno != null ? (tipoGobierno ? "Democracia" : "Otro") : "N/A")
-        };
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
 
-        model.addRow(fila);
-    }
+            // Asignar los parámetros a los signos de interrogación (?)
+            for (int i = 0; i < parametros.size(); i++) {
+                ps.setObject(i + 1, parametros.get(i));
+            }
 
-    // Mostrar mensaje si no hay resultados
-    if (!hayResultados) {
-        JOptionPane.showMessageDialog(this,
-            "No se encontraron países con ese criterio.",
-            "Sin resultados",
-            JOptionPane.INFORMATION_MESSAGE);
-    }
+            ResultSet rs = ps.executeQuery();
+            boolean hayResultados = false;
 
-} catch (Exception e) {
-    // Manejo de errores de conexión o SQL
-    JOptionPane.showMessageDialog(this,
-        "Error al consultar: " + e.getMessage(),
-        "Error de Base de Datos",
-        JOptionPane.ERROR_MESSAGE);
-}
+            while (rs.next()) {
+                hayResultados = true;
+                Object[] fila = {
+                    rs.getString("codigoPais"),
+                    rs.getString("nombrePais"),
+                    rs.getString("continentePais"),
+                    rs.getInt("poblacionPais"),
+                    rs.getBoolean("tipoGobierno") ? "Democracia" : "Otro"
+                };
+                model.addRow(fila);
+            }
+
+            if (!hayResultados) {
+                JOptionPane.showMessageDialog(this, "No se encontraron resultados con esos criterios.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error en la consulta: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
