@@ -196,7 +196,7 @@ public class Vista extends javax.swing.JFrame {
         jTableCiudades1 = new javax.swing.JTable();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        btnConsultarIdioma = new javax.swing.JButton();
+        btnConsultarIdioma1 = new javax.swing.JButton();
         jComboBox2 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jComboBox3 = new javax.swing.JComboBox<>();
@@ -405,6 +405,11 @@ public class Vista extends javax.swing.JFrame {
         });
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Argentina", "Brasil", "Chile" }));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelCiudadesLayout = new javax.swing.GroupLayout(jPanelCiudades);
         jPanelCiudades.setLayout(jPanelCiudadesLayout);
@@ -463,10 +468,10 @@ public class Vista extends javax.swing.JFrame {
 
         jLabel12.setText("Pais");
 
-        btnConsultarIdioma.setText("Consultar");
-        btnConsultarIdioma.addActionListener(new java.awt.event.ActionListener() {
+        btnConsultarIdioma1.setText("Consultar");
+        btnConsultarIdioma1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultarIdiomaActionPerformed(evt);
+                btnConsultarIdioma1ActionPerformed(evt);
             }
         });
 
@@ -481,7 +486,7 @@ public class Vista extends javax.swing.JFrame {
                 .addGroup(jPanelCiudades1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11)
                     .addGroup(jPanelCiudades1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(btnConsultarIdioma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnConsultarIdioma1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelCiudades1Layout.createSequentialGroup()
                             .addComponent(jLabel12)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -505,7 +510,7 @@ public class Vista extends javax.swing.JFrame {
                             .addComponent(jLabel12)
                             .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(60, 60, 60)
-                        .addComponent(btnConsultarIdioma)))
+                        .addComponent(btnConsultarIdioma1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -653,12 +658,89 @@ public class Vista extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
-    private void btnConsultarIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarIdiomaActionPerformed
+    private void btnConsultarIdioma1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarIdioma1ActionPerformed
+// 1. Obtener el nombre del país del ComboBox
+        String nombrePais = jComboBox2.getSelectedItem().toString();
+        
+        // 2. Obtener el código (ARG, BRA, CHL) usando tu método auxiliar existente
+        String codigoPais = obtenerCodigoPais(nombrePais);
 
-    }//GEN-LAST:event_btnConsultarIdiomaActionPerformed
+        // 3. Obtener el modelo de la tabla y limpiarlo
+        DefaultTableModel model = (DefaultTableModel) jTableCiudades1.getModel();
+        model.setRowCount(0); 
+
+        // 4. Definir la consulta SQL
+        String sql = "SELECT nombreIdioma, oficial FROM Idioma WHERE codigoPais = ?";
+
+        // 5. Conectar y ejecutar (Usando ConexionNueva como en tus otros métodos)
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, codigoPais);
+            ResultSet rs = ps.executeQuery();
+
+            boolean hayDatos = false;
+
+            while (rs.next()) {
+                hayDatos = true;
+                String idioma = rs.getString("nombreIdioma");
+                
+                // Convertir el campo 'oficial' (1 o 0) a "Sí" o "No"
+                int oficialInt = rs.getInt("oficial"); 
+                String esOficial = (oficialInt == 1) ? "Sí" : "No";
+
+                model.addRow(new Object[]{idioma, esOficial});
+            }
+
+            if (!hayDatos) {
+                JOptionPane.showMessageDialog(this, "No se encontraron idiomas registrados para " + nombrePais);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar idiomas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnConsultarIdioma1ActionPerformed
 
     private void btnConsultarCiudadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarCiudadActionPerformed
         // TODO add your handling code here:
+        // 1. Obtener el país seleccionado del combo
+        String nombrePais = jComboBox1.getSelectedItem().toString();
+
+        // 2. Convertir el nombre a código (usando tu método auxiliar)
+        String codigoPais = obtenerCodigoPais(nombrePais);
+
+        // 3. Preparar la tabla de Ciudades
+        DefaultTableModel model = (DefaultTableModel) jTableCiudades.getModel();
+        model.setRowCount(0); // Limpiar datos anteriores
+
+        // 4. Crear la consulta SQL
+        String sql = "SELECT nombreCiudad, poblacionCiudad FROM Ciudad WHERE codigoPais = ?";
+
+        // 5. Conectar y buscar
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, codigoPais);
+            ResultSet rs = ps.executeQuery();
+
+            boolean hayDatos = false;
+
+            while (rs.next()) {
+                hayDatos = true;
+                String nombre = rs.getString("nombreCiudad");
+                int poblacion = rs.getInt("poblacionCiudad");
+
+                // Agregar fila a la tabla: [Nombre Ciudad, Población]
+                model.addRow(new Object[]{nombre, poblacion});
+            }
+
+            if (!hayDatos) {
+                JOptionPane.showMessageDialog(this, "No hay ciudades registradas para " + nombrePais, "Sin resultados", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al consultar ciudades: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnConsultarCiudadActionPerformed
 
     private void cboxContinenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxContinenteActionPerformed
@@ -680,6 +762,10 @@ public class Vista extends javax.swing.JFrame {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         //Acá codificará el Evento para Actualizar un País.
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -720,7 +806,7 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JButton btnComparar;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnConsultarCiudad;
-    private javax.swing.JButton btnConsultarIdioma;
+    private javax.swing.JButton btnConsultarIdioma1;
     private javax.swing.JButton btnCrear;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnModificar;
