@@ -806,7 +806,7 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-   String nombrePais = jComboBox2.getSelectedItem().toString();
+    String nombrePais = jComboBox2.getSelectedItem().toString();
         
         // 2. Obtener el código (ARG, BRA, CHL) usando tu método auxiliar existente
         String codigoPais = obtenerCodigoPais(nombrePais);
