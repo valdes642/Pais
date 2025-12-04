@@ -664,7 +664,7 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void btnConsultarIdioma1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarIdioma1ActionPerformed
-// 1. Obtener el nombre del país del ComboBox
+// 1. Obtener el nombre del país del ComboBoxdfdfddffdfd
         String nombrePais = jComboBox2.getSelectedItem().toString();
         
         // 2. Obtener el código (ARG, BRA, CHL) usando tu método auxiliar existente
