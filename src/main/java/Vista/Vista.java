@@ -29,6 +29,15 @@ public class Vista extends javax.swing.JFrame {
         cargarDatosCiudad();
         
     }
+    
+    private void limpiarCampos() {
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtPoblacion.setText("");
+        cboxContinente.setSelectedIndex(0); // Vuelve al primero
+        chkTipoGobierno.setSelected(false);
+        txtCodigo.requestFocus(); // Pone el cursor listo para el siguiente
+    }
 
     private void cargarDatosPais() {
         DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
@@ -150,6 +159,9 @@ public class Vista extends javax.swing.JFrame {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar comparación: " + e.getMessage());
         }
+    
+        
+        
     }
     
     
@@ -849,6 +861,56 @@ public class Vista extends javax.swing.JFrame {
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         //Acá codificará el Evento para Crear un País.
+        // 1. Obtener los datos del formulario
+        String codigo = txtCodigo.getText().trim();
+        String nombre = txtNombre.getText().trim();
+        String continente = cboxContinente.getSelectedItem().toString();
+        boolean esDemocracia = chkTipoGobierno.isSelected();
+        String poblacionTexto = txtPoblacion.getText().trim();
+
+        // 2. Validar que no haya campos vacíos obligatorios
+        if (codigo.isEmpty() || nombre.isEmpty() || poblacionTexto.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor completa el Código, Nombre y Población.", "Campos Vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // 3. Convertir la población a número
+            int poblacion = Integer.parseInt(poblacionTexto);
+
+            // 4. Preparar la consulta SQL
+            String sql = "INSERT INTO Pais (codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno) VALUES (?, ?, ?, ?, ?)";
+
+            try (Connection conn = Conexion.ConexionNueva.conectar();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, codigo);
+                ps.setString(2, nombre);
+                ps.setString(3, continente);
+                ps.setInt(4, poblacion);
+                ps.setBoolean(5, esDemocracia);
+
+                // 5. Ejecutar la inserción
+                int filasAfectadas = ps.executeUpdate();
+
+                if (filasAfectadas > 0) {
+                    JOptionPane.showMessageDialog(this, "País agregado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    
+                    // 6. Actualizar la tabla y limpiar campos
+                    cargarDatosPais(); 
+                    limpiarCampos(); 
+                }
+
+            } catch (java.sql.SQLIntegrityConstraintViolationException ex) {
+                // Este error salta si intentas repetir el Código del País (Llave primaria)
+                JOptionPane.showMessageDialog(this, "Error: El código '" + codigo + "' ya existe en la base de datos.", "Código Duplicado", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al guardar en la BD: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "La población debe ser un número entero válido.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
