@@ -20,10 +20,7 @@ import Modelo.Ciudad;
 
 import javax.swing.table.DefaultTableModel;
 
-public class Vista extends javax.swing.JFrame {
-
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(VistaCiudad.class.getName());
-    
+public class Vista extends javax.swing.JFrame {    
     public Vista() {
         initComponents();
         cargarDatosPais();
@@ -134,6 +131,7 @@ public class Vista extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanelPaises = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
@@ -176,6 +174,7 @@ public class Vista extends javax.swing.JFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jTableCiudades3 = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -198,6 +197,8 @@ public class Vista extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
+
+        jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PAISES DEL MUNDO");
@@ -545,7 +546,7 @@ public class Vista extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel6)
                 .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
@@ -560,6 +561,14 @@ public class Vista extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Comparacion", jPanel1);
+
+        jButton3.setText("Volver");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jTabbedPane1.addTab("Volver", jButton3);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -599,12 +608,18 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnConsultarIdiomaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarIdiomaActionPerformed
-        // TODO add your handling code here:
+    
     }//GEN-LAST:event_btnConsultarIdiomaActionPerformed
 
     private void cboxContinenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxContinenteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cboxContinenteActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    VistaCiudad vista = new VistaCiudad();
+    vista.setVisible(true);
+    dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -651,6 +666,8 @@ public class Vista extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboxContinente;
     private javax.swing.JCheckBox chkTipoGobierno;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
