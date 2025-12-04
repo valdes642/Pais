@@ -757,113 +757,44 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        //Acá codificará el Evento para Eliminar un País.
-        // 1. Iniciar la construcción de la consulta
-        // "WHERE 1=1" es un truco para poder agregar "AND ..." libremente después
-        StringBuilder sql = new StringBuilder("SELECT * FROM Pais WHERE 1=1");
-        List<Object> parametros = new ArrayList<>();
+   String nombrePais = jComboBox2.getSelectedItem().toString();
+        
+        // 2. Obtener el código (ARG, BRA, CHL) usando tu método auxiliar existente
+        String codigoPais = obtenerCodigoPais(nombrePais);
 
-        // 2. Recolectar datos de la interfaz
-        String codigo = txtCodigo.getText().trim();
-        String nombre = txtNombre.getText().trim();
-        String poblacionTexto = txtPoblacion.getText().trim();
-        String continente = cboxContinente.getSelectedItem().toString();
-        boolean esDemocracia = chkTipoGobierno.isSelected();
+        // 3. Obtener el modelo de la tabla y limpiarlo
+        DefaultTableModel model = (DefaultTableModel) jTableCiudades1.getModel();
+        model.setRowCount(0); 
 
-        // 3. Agregar filtros dinámicamente
+        // 4. Definir la consulta SQL
+        String sql = "SELECT nombreIdioma, oficial FROM Idioma WHERE codigoPais = ?";
 
-if (buscarPorCodigo) {
-    // Si hay código, buscar SÓLO por código.
-    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE codigoPais = ?";
-} else {
-    // Si no hay código, buscar por continente.
-    // **NOTA:** Si quieres que se muestren *todos* los países cuando NO se introduce un código y el continente es "Todos", 
-    // debes agregar una lógica aquí para modificar 'sql'. Por ejemplo:
-    
-    if (continenteSeleccionado.equals("Todos")) {
-        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais";
-    } else {
-        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
-    }
-    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
-}
-
-// Se usa try-with-resources para Connection y PreparedStatement
-try (Connection conn = Conexion.ConexionBD.conectar();
-     PreparedStatement ps = conn.prepareStatement(sql)) {
-
-    // Se asignan los parámetros
-    if (buscarPorCodigo) {
-        ps.setString(1, codigoBuscado);
-    } else {
-        // Se maneja el caso donde el continente podría no ser un parámetro si la lógica superior lo modifica (ej. "Todos")
-        /*
-        if (!continenteSeleccionado.equals("Todos")) {
-            ps.setString(1, continenteSeleccionado);
-        }
-
-        // -- Filtro por NOMBRE (Búsqueda parcial con LIKE)
-        if (!nombre.isEmpty()) {
-            sql.append(" AND nombrePais LIKE ?");
-            parametros.add("%" + nombre + "%");
-        }
-
-        // -- Filtro por CONTINENTE
-        // Nota: Como el ComboBox siempre tiene algo seleccionado, siempre filtrará por esto.
-        // Si quieres que busque "cualquiera", deberías agregar una opción "Todos" al ComboBox.
-        sql.append(" AND continentePais = ?");
-        parametros.add(continente);
-
-        // -- Filtro por TIPO DE GOBIERNO
-        // Igual que arriba, filtrará por lo que esté marcado o desmarcado
-        sql.append(" AND tipoGobierno = ?");
-        parametros.add(esDemocracia);
-
-        // -- Filtro por POBLACIÓN (Solo si escribieron un número)
-        if (!poblacionTexto.isEmpty()) {
-            try {
-                int poblacion = Integer.parseInt(poblacionTexto);
-                sql.append(" AND poblacionPais = ?"); // O puedes usar >= para "mayor a"
-                parametros.add(poblacion);
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this, "La población debe ser un número válido.");
-                return; // Detener si el número está mal escrito
-            }
-        }
-
-        // 4. Ejecutar la consulta final
-        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
-        model.setRowCount(0); // Limpiar tabla
-
+        // 5. Conectar y ejecutar (Usando ConexionNueva como en tus otros métodos)
         try (Connection conn = Conexion.ConexionNueva.conectar();
-             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            // Asignar los parámetros a los signos de interrogación (?)
-            for (int i = 0; i < parametros.size(); i++) {
-                ps.setObject(i + 1, parametros.get(i));
-            }
-
+            ps.setString(1, codigoPais);
             ResultSet rs = ps.executeQuery();
-            boolean hayResultados = false;
+
+            boolean hayDatos = false;
 
             while (rs.next()) {
-                hayResultados = true;
-                Object[] fila = {
-                    rs.getString("codigoPais"),
-                    rs.getString("nombrePais"),
-                    rs.getString("continentePais"),
-                    rs.getInt("poblacionPais"),
-                    rs.getBoolean("tipoGobierno") ? "Democracia" : "Otro"
-                };
-                model.addRow(fila);
+                hayDatos = true;
+                String idioma = rs.getString("nombreIdioma");
+                
+                // Convertir el campo 'oficial' (1 o 0) a "Sí" o "No"
+                int oficialInt = rs.getInt("oficial"); 
+                String esOficial = (oficialInt == 1) ? "Sí" : "No";
+
+                model.addRow(new Object[]{idioma, esOficial});
             }
 
-            if (!hayResultados) {
-                JOptionPane.showMessageDialog(this, "No se encontraron resultados con esos criterios.", "Sin Resultados", JOptionPane.INFORMATION_MESSAGE);
+            if (!hayDatos) {
+                JOptionPane.showMessageDialog(this, "No se encontraron idiomas registrados para " + nombrePais);
             }
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error en la consulta: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al consultar idiomas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
