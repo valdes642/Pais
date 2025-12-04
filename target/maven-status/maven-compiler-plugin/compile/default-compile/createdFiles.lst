@@ -1,6 +1,7 @@
 Vista\VistaCiudad$5.class
 Vista\VistaIdioma$3.class
 Controles\UsuarioControl.class
+Vista\Vista$11.class
 Modelo\Pais.class
 Vista\VistaNosotros$1.class
 Vista\Vista$5.class
@@ -24,6 +25,7 @@ Controles\LoginControl.class
 com\mycompany\paises\Paises.class
 Vista\VistaNosotros.class
 Vista\VistaCiudad.class
+Vista\Vista$10.class
 Vista\VistaCiudad$6.class
 Modelo\Usuario.class
 Vista\VistaLogin$4.class
