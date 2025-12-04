@@ -26,6 +26,7 @@ import javax.swing.RowSorter;
 import java.awt.Desktop;
 import java.net.URI;
 import Conexion.ConexionBD;
+
 // Importa las clases necesarias de SQL
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -52,7 +53,7 @@ public class VistaCiudad extends javax.swing.JFrame {
     }
     
     private void buscarCiudades() {
-        // 5 COLUMNAS: ID, Nombre, Distrito, Cód. País, Población
+        // 5 COLUMNAS: ID, Nombre, Distrito, Código.País, Población
         DefaultTableModel Modelo = new DefaultTableModel(
                 new Object[]{"ID", "Nombre", "Distrito", "Cód. País", "Población"}, 0
         );
@@ -63,7 +64,7 @@ public class VistaCiudad extends javax.swing.JFrame {
         String poblacion = txtPoblacion.getText();
         String codigoPais = txtCodigoPais.getText();
 
-        // --- USAR DAO ---
+        //Uso De Controles
         Controles.CiudadControl dao = new Controles.CiudadControl();
         java.util.List<Modelo.Ciudad> lista = dao.listarCiudades(id, ciudad, distrito, poblacion, codigoPais);
 

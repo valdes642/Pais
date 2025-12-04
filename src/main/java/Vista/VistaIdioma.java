@@ -21,8 +21,8 @@ import Controles.IdiomaControl;
 public class VistaIdioma extends javax.swing.JFrame {
 
     public VistaIdioma() {
-        initComponents(); // Inicia el diseño gráfico
-        setLocationRelativeTo(null); // Centra la ventana en la pantalla
+        initComponents();
+        setLocationRelativeTo(null);
     }
 
     
