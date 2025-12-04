@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class ConexionNueva {
     private static final String URL = "jdbc:mysql://localhost:3306/mundo";
     private static final String USER = "root"; // cambia según tu configuración
-    private static final String PASSWORD = "060402"; // si tienes contraseña, colócala aquí
+    private static final String PASSWORD = "root"; // si tienes contraseña, colócala aquí
 
     public static Connection conectar() {
         try {

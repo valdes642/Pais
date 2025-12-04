@@ -27,7 +27,9 @@ public class Vista extends javax.swing.JFrame {
     public Vista() {
         initComponents();
         cargarDatosPais();
-
+        cargarDatosIdiomas();
+        cargarDatosCiudad();
+        
     }
 
     private void cargarDatosPais() {
@@ -62,6 +64,63 @@ public class Vista extends javax.swing.JFrame {
         }
     }
     
+    private void cargarDatosCiudad() {
+    DefaultTableModel model = (DefaultTableModel) jTableCiudades.getModel();
+    model.setRowCount(0);
+
+    String sql = "SELECT nombreCiudad, poblacionCiudad FROM Ciudad";
+
+    try (Connection conn = Conexion.ConexionBD.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            String nombreCiudad = rs.getString("nombreCiudad");
+            
+            int poblacion = rs.getInt("poblacionCiudad"); 
+            
+            Object[] fila = {
+                nombreCiudad,
+                poblacion,
+            };
+
+            model.addRow(fila);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar datos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+    private void cargarDatosIdiomas() {
+    DefaultTableModel model = (DefaultTableModel) jTableCiudades1.getModel();
+    model.setRowCount(0);
+
+    String sql = "SELECT nombreIdioma, oficial FROM idioma";
+
+    try (Connection conn = Conexion.ConexionBD.conectar();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            String idioma = rs.getString("nombreIdioma");
+            
+            int oficialDB = rs.getInt("oficial"); 
+
+            String esOficialTexto = (oficialDB == 1) ? "Sí" : "No";
+
+            Object[] fila = {
+                idioma,        
+                esOficialTexto
+            };
+
+            model.addRow(fila);
+        }
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar datos de idiomas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
     
     
     /**
