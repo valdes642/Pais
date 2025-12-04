@@ -249,6 +249,17 @@ public class Vista extends javax.swing.JFrame {
 
         jLabel5.setText("Población");
 
+        txtCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoActionPerformed(evt);
+            }
+        });
+        txtCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCodigoKeyReleased(evt);
+            }
+        });
+
         jTablePais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -920,6 +931,55 @@ public class Vista extends javax.swing.JFrame {
         String gobierno = model.getValueAt(fila, 4).toString();
         chkTipoGobierno.setSelected(gobierno.equals("Democracia"));
     }//GEN-LAST:event_jTablePaisMouseClicked
+
+    private void txtCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoActionPerformed
+        // TODO add your handling code here:
+        // 1. Obtener lo que el usuario está escribiendo
+      
+    }//GEN-LAST:event_txtCodigoActionPerformed
+
+    private void txtCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyReleased
+        // TODO add your handling code here:
+        // 1. Obtener lo que el usuario está escribiendo
+        String codigoBusqueda = txtCodigo.getText().trim();
+
+        // 2. Limpiar la tabla
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+        model.setRowCount(0);
+
+        // 3. Consulta SQL con LIKE para buscar coincidencias parciales
+        // El símbolo % significa "cualquier cosa que siga después"
+        String sql = "SELECT * FROM Pais WHERE codigoPais LIKE ?";
+
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Agregamos el % al final para que busque "lo que escribiste + cualquier cosa"
+            ps.setString(1, codigoBusqueda + "%");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String codigo = rs.getString("codigoPais");
+                String nombre = rs.getString("nombrePais");
+                String continente = rs.getString("continentePais");
+                int poblacion = rs.getInt("poblacionPais");
+                boolean tipoGobierno = rs.getBoolean("tipoGobierno");
+
+                Object[] fila = {
+                    codigo, 
+                    nombre, 
+                    continente, 
+                    poblacion, 
+                    tipoGobierno ? "Democracia" : "Otro"
+                };
+                model.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al filtrar por código: " + e.getMessage());
+        }
+    }//GEN-LAST:event_txtCodigoKeyReleased
     /**
      * @param args the command line arguments
      */

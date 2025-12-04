@@ -5,6 +5,7 @@ Conexion\ConexionBD.class
 Vista\VistaCiudad$3.class
 Vista\Vista$8.class
 Vista\VistaCiudad$7.class
+Vista\Vista$14.class
 Vista\Vista$1.class
 Modelo\Idioma.class
 Conexion\ConexionNueva.class
@@ -19,6 +20,7 @@ Modelo\Ciudad.class
 Vista\VistaCiudad$1.class
 Vista\VistaCiudad$4.class
 Vista\Vista$2.class
+Vista\Vista$15.class
 Vista\VistaLogin$3.class
 Vista\VistaCiudad$5.class
 Vista\VistaIdioma$3.class
