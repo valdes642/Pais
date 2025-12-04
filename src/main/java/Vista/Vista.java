@@ -752,7 +752,103 @@ public class Vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        //Acá codificará el Evento para Eliminar un País.
+String codigoBuscado = txtCodigo.getText().trim();
+// Asumiendo que cboxContinente SIEMPRE tiene un item seleccionado (ej: "Todos" o un continente válido)
+String continenteSeleccionado = cboxContinente.getSelectedItem().toString(); 
+
+DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+model.setRowCount(0);
+
+String sql;
+boolean buscarPorCodigo = !codigoBuscado.isEmpty();
+
+if (buscarPorCodigo) {
+    // Si hay código, buscar SÓLO por código.
+    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE codigoPais = ?";
+} else {
+    // Si no hay código, buscar por continente.
+    // **NOTA:** Si quieres que se muestren *todos* los países cuando NO se introduce un código y el continente es "Todos", 
+    // debes agregar una lógica aquí para modificar 'sql'. Por ejemplo:
+    /*
+    if (continenteSeleccionado.equals("Todos")) {
+        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais";
+    } else {
+        sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
+    }
+    */
+    sql = "SELECT codigoPais, nombrePais, continentePais, poblacionPais, tipoGobierno FROM Pais WHERE continentePais = ?";
+}
+
+// Se usa try-with-resources para Connection y PreparedStatement
+try (Connection conn = Conexion.ConexionBD.conectar();
+     PreparedStatement ps = conn.prepareStatement(sql)) {
+
+    // Se asignan los parámetros
+    if (buscarPorCodigo) {
+        ps.setString(1, codigoBuscado);
+    } else {
+        // Se maneja el caso donde el continente podría no ser un parámetro si la lógica superior lo modifica (ej. "Todos")
+        /*
+        if (!continenteSeleccionado.equals("Todos")) {
+            ps.setString(1, continenteSeleccionado);
+        }
+        */
+        ps.setString(1, continenteSeleccionado);
+    }
+
+    // Se ejecuta la consulta
+    ResultSet rs = ps.executeQuery();
+
+    boolean hayResultados = false;
+
+    // Se procesan los resultados
+    while (rs.next()) {
+        hayResultados = true;
+
+        // Se obtienen los datos. Usar getInt y getBoolean directamente puede ser más limpio si la columna 
+        // NO acepta NULLS, pero el código original ya maneja bien los objetos para NULLS.
+        String codigo = rs.getString("codigoPais");
+        String nombre = rs.getString("nombrePais");
+        String continente = rs.getString("continentePais");
+        
+        // Manejo de valores que pueden ser NULL en la BD
+        // El código original ya maneja esto correctamente
+        Object poblacionObj = rs.getObject("poblacionPais");
+        Integer poblacion = (poblacionObj != null) ? (Integer) poblacionObj : null;
+
+        Object tipoGobiernoObj = rs.getObject("tipoGobierno");
+        // Si tipoGobierno es BIT o BOOLEAN, se puede usar rs.getBoolean, pero rs.getObject y casting es más robusto si es nullable.
+        // Se asume el mismo manejo del original: un Boolean (TRUE/FALSE) o NULL.
+        Boolean tipoGobierno = (tipoGobiernoObj != null) ? (Boolean) tipoGobiernoObj : null; 
+
+        // Se preparan los datos para la fila de la tabla
+        Object[] fila = {
+            (codigo != null ? codigo : "N/A"),
+            (nombre != null ? nombre : "N/A"),
+            (continente != null ? continente : "N/A"),
+            (poblacion != null ? poblacion.toString() : "N/A"), // Convertir Integer a String para la tabla
+            // Mapeo del booleano a texto
+            (tipoGobierno != null ? (tipoGobierno ? "Democracia" : "Otro") : "N/A")
+        };
+
+        model.addRow(fila);
+    }
+
+    // Mostrar mensaje si no hay resultados
+    if (!hayResultados) {
+        JOptionPane.showMessageDialog(this,
+            "No se encontraron países con ese criterio.",
+            "Sin resultados",
+            JOptionPane.INFORMATION_MESSAGE);
+    }
+
+} catch (Exception e) {
+    // Manejo de errores de conexión o SQL
+    JOptionPane.showMessageDialog(this,
+        "Error al consultar: " + e.getMessage(),
+        "Error de Base de Datos",
+        JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
