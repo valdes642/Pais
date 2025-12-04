@@ -272,6 +272,12 @@ public class Vista extends javax.swing.JFrame {
             }
         });
 
+        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreKeyReleased(evt);
+            }
+        });
+
         jTablePais.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -1042,6 +1048,49 @@ public class Vista extends javax.swing.JFrame {
             System.out.println("Error al filtrar por código: " + e.getMessage());
         }
     }//GEN-LAST:event_txtCodigoKeyReleased
+
+    private void txtNombreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyReleased
+        // TODO add your handling code here:
+        // 1. Obtener lo que el usuario escribe
+        String busqueda = txtNombre.getText().trim();
+
+        // 2. Limpiar la tabla para mostrar los nuevos resultados
+        DefaultTableModel model = (DefaultTableModel) jTablePais.getModel();
+        model.setRowCount(0);
+
+        // 3. Consulta SQL con LIKE
+        String sql = "SELECT * FROM Pais WHERE nombrePais LIKE ?";
+
+        try (Connection conn = Conexion.ConexionNueva.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // El símbolo % al final significa "que empiece con esto"
+            // Ejemplo: "Arg%" encuentra Argentina, Argelia, etc.
+            ps.setString(1, busqueda + "%");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String codigo = rs.getString("codigoPais");
+                String nombre = rs.getString("nombrePais");
+                String continente = rs.getString("continentePais");
+                int poblacion = rs.getInt("poblacionPais");
+                boolean tipoGobierno = rs.getBoolean("tipoGobierno");
+
+                Object[] fila = {
+                    codigo, 
+                    nombre, 
+                    continente, 
+                    poblacion, 
+                    tipoGobierno ? "Democracia" : "Otro"
+                };
+                model.addRow(fila);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error al buscar por nombre: " + e.getMessage());
+        }
+    }//GEN-LAST:event_txtNombreKeyReleased
     /**
      * @param args the command line arguments
      */
